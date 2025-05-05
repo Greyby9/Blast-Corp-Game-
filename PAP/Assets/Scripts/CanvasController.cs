@@ -3,9 +3,11 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Audio;
 using TMPro;
+using System.ComponentModel;
 
 public class CanvasController : MonoBehaviour
 {
+    public static CanvasController instace;
     public int currentWeaponIndex = 0;
     public GameObject menuOptions;
     public GameObject mainPause;
@@ -15,12 +17,17 @@ public class CanvasController : MonoBehaviour
     public GameObject canvasPistol;
     public GameObject canvasSMG;
     public GameObject canvasShotgun;
-
+    public GameObject changePistolBetweenSMGAds;
+    void Awake()
+    {
+        instace = this;
+    }
     void Start()
     {
         canvasSMG.SetActive(false);
         canvasPistol.SetActive(true);
         canvasShotgun.SetActive(false);
+        changePistolBetweenSMGAds.SetActive(false);
 
         
     }
@@ -37,6 +44,14 @@ public class CanvasController : MonoBehaviour
         }
         if(GameController.instance.hasShotgun==true){
         canvasShotgun.SetActive(true);
+        }
+        if (changePistolBetweenSMGAds.activeSelf){
+            Time.timeScale = 0f;
+            if (Input.GetKey(KeyCode.N)){
+                changePistolBetweenSMGAds.SetActive(false);
+                Time.timeScale = 1f;
+            }
+
         }
     }
 

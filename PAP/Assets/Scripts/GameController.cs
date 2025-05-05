@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
-using System.Data;
 public class GameController : MonoBehaviour
 {
     public static GameController instance;
@@ -112,6 +111,7 @@ public class GameController : MonoBehaviour
     {
             if (playerPistol.activeSelf)
         {
+            Debug.Log("1");
             Shoot.instance.shootPoint=shootPointIdlePistol;
         if (Input.GetKey(KeyCode.UpArrow) && Input.GetKey(KeyCode.DownArrow))
         {
@@ -209,6 +209,7 @@ public class GameController : MonoBehaviour
         }
             if (playerSMG.activeSelf)
         {
+            Debug.Log("2");
             Shoot.instance.shootPoint=shootPointIdleSMG;
         if (Input.GetKey(KeyCode.UpArrow) && Input.GetKey(KeyCode.DownArrow))
         {
@@ -230,7 +231,7 @@ public class GameController : MonoBehaviour
             transform.eulerAngles = new Vector3(0f, 0f, 0f);
             }
             Player.instance.anim.SetBool("DiagonallyLeft", true);
-            Shoot.instance.shootPoint=shootPointDiagonallyLeftSMG;            
+            Shoot.instance.shootPoint=shootPointDiagonallySMG;            
             Player.instance.anim.SetBool("shootingVertically", false);
         }
         else 

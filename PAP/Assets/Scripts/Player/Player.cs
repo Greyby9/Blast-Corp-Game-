@@ -51,7 +51,6 @@ public class Player : MonoBehaviour
     {
         instance = this;
         initialSpeedMoviment=speedMoviment;
-        anim = GetComponent<Animator>();
     }
     void Start(){
         miCuerpoRigido = GetComponent<Rigidbody2D>();
@@ -312,7 +311,8 @@ IEnumerator LoseHPCoroutine()
         Destroy(collider.gameObject);
         GameController.instance.hasSMG=true;
         GameController.instance.spawnerEnemy.SetActive(false);
-        GameController.instance.spawnerDrone.SetActive(false);
+        GameController.instance.spawnerDrone.SetActive(false);  
+        CanvasController.instace.changePistolBetweenSMGAds.SetActive(true);
 
         }
         if (collider.gameObject.CompareTag("BoxBulletShotgun")) {
