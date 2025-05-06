@@ -46,6 +46,7 @@ public class Player : MonoBehaviour
     //>>>>>>>>>>>>>>>>>>Sound
     public AudioClip soundJump;
     public AudioClip soundWalk;
+    public bool statusDuck;
 
     void Awake()
     {
@@ -60,6 +61,7 @@ public class Player : MonoBehaviour
         lookingRight= true;
         anim.SetBool("onground", true);
         StartCoroutine(waitAndExe());
+        Debug.Log("GroundLayer: " + capaSuelo.value);
 
         if (!PlayerPrefs.HasKey("lives"))
         {
@@ -69,7 +71,8 @@ public class Player : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update(){ 
+    void Update()
+    { 
         staticPlayer();      
         canvasController.UpdateUp(PlayerPrefs.GetInt("lives"));
 
@@ -125,8 +128,7 @@ public class Player : MonoBehaviour
 
 
 
-    }
-
+    }   
     void soundmove()
     {
         soundController.Instace.exeSound(soundWalk);
@@ -179,6 +181,7 @@ public class Player : MonoBehaviour
             speedMoviment=0f;
             anim.SetBool("move", false);
             anim.SetBool("isDuck", true);
+            statusDuck=true;
             boxCollider.size = new Vector2(originalSizeCollider.x, originalSizeCollider.y * 0.5f); // Reduce la altura a la mitad
             boxCollider.offset = new Vector2(originalOffsetCollider.x, originalOffsetCollider.y - (originalSizeCollider.y * 0.25f)); // Baja el Collider
             
@@ -193,6 +196,7 @@ public class Player : MonoBehaviour
             } else {
                 speedMoviment=initialSpeedMoviment;
                 anim.SetBool("isDuck", false);
+                statusDuck=false;
             boxCollider.size = originalSizeCollider; // Restaura el tamaño original
             boxCollider.offset = originalOffsetCollider; // Restaura el offset original
             }

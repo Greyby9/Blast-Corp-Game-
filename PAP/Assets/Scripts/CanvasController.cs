@@ -35,6 +35,7 @@ public class CanvasController : MonoBehaviour
     void Update()
     {
     showWeapon();
+    pause();
     }
     void showWeapon(){
         canvasPistol.SetActive(true);

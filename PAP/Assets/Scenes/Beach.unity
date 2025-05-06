@@ -1352,7 +1352,7 @@ GameObject:
   - component: {fileID: 141050284}
   - component: {fileID: 141050285}
   - component: {fileID: 141050286}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: PlayerSMG
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1529,7 +1529,7 @@ MonoBehaviour:
   lengthRayCast: 0.87
   capaSuelo:
     serializedVersion: 2
-    m_Bits: 72
+    m_Bits: 64
   enSuelo: 0
   anim: {fileID: 141050284}
   timeDie: 0.1
@@ -1543,6 +1543,7 @@ MonoBehaviour:
   playerStatic: 0
   soundJump: {fileID: 8300000, guid: 1b0a78d818af1e4409ae84551881131e, type: 3}
   soundWalk: {fileID: 8300000, guid: 07942fc7bc2d5474cb17f84615144a96, type: 3}
+  statusDuck: 0
 --- !u!114 &141050283
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13471,6 +13472,7 @@ MonoBehaviour:
   playerStatic: 0
   soundJump: {fileID: 8300000, guid: 1b0a78d818af1e4409ae84551881131e, type: 3}
   soundWalk: {fileID: 8300000, guid: 07942fc7bc2d5474cb17f84615144a96, type: 3}
+  statusDuck: 0
 --- !u!61 &1022273342
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -17381,7 +17383,7 @@ GameObject:
   - component: {fileID: 1295162359}
   - component: {fileID: 1295162358}
   - component: {fileID: 1295162357}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: PlayerPistol
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -17502,7 +17504,7 @@ MonoBehaviour:
   lengthRayCast: 0.87
   capaSuelo:
     serializedVersion: 2
-    m_Bits: 72
+    m_Bits: 64
   enSuelo: 0
   anim: {fileID: 1295162359}
   timeDie: 0.1
@@ -17516,6 +17518,7 @@ MonoBehaviour:
   playerStatic: 0
   soundJump: {fileID: 8300000, guid: 1b0a78d818af1e4409ae84551881131e, type: 3}
   soundWalk: {fileID: 8300000, guid: 07942fc7bc2d5474cb17f84615144a96, type: 3}
+  statusDuck: 0
 --- !u!61 &1295162362
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -24594,7 +24597,7 @@ MonoBehaviour:
   shootPointVerticallySMG: {fileID: 1639199878}
   shootPointDuckSMG: {fileID: 1698744192}
   shootPointDiagonallySMG: {fileID: 924736957}
-  shootPointDiagonallyLeftSMG: {fileID: 1342786790}
+  shootPointDiagonallyLeftSMG: {fileID: 924736957}
   shootPointIdleSMG: {fileID: 733091416}
   shootPointVerticallyPistol: {fileID: 499498147}
   shootPointDuckPistol: {fileID: 1916446904}
