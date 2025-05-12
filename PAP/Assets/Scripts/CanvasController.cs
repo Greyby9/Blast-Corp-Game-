@@ -39,11 +39,11 @@ public class CanvasController : MonoBehaviour
     }
     void showWeapon(){
         canvasPistol.SetActive(true);
-        if (GameController.instance.hasSMG==true)
+        if (GameData.instance.hasSMG==true)
         {
         canvasSMG.SetActive(true);
         }
-        if(GameController.instance.hasShotgun==true){
+        if(GameData.instance.hasShotgun==true){
         canvasShotgun.SetActive(true);
         }
         if (changePistolBetweenSMGAds.activeSelf){

@@ -6,18 +6,22 @@ public class BulletDroneScript : MonoBehaviour
     public float speed = 5f;
     public float lifeTime = 5f;
     private Animator anim;
+    private Rigidbody2D rbBullet;
 
     void Start()
     {
         anim = GetComponent<Animator>();
-        Destroy(gameObject, lifeTime); // Destruye la bala después de un tiempo
+        rbBullet = GetComponent<Rigidbody2D>();
+
+        Destroy(gameObject, lifeTime);
     }
 
     void Update()
     {
-        // La bala se mueve hacia abajo
-        transform.Translate(Vector2.down * speed * Time.deltaTime);
+          
     }
+
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -26,20 +30,14 @@ public class BulletDroneScript : MonoBehaviour
             anim.SetTrigger("isContact");
             Destroy(collision.gameObject);
             Player.instance.loseHP();
-            Destroy(gameObject,0.2f);
-            if (Player.instance.lives <= 0){
-                UIController.Instance.gameOver();
-            }else {
-                SceneManager.LoadScene(1);
-            }
-            
-
+            Destroy(gameObject);
         } 
 
         if (collision.CompareTag("Ground"))
         {
             anim.SetTrigger("isContact");
             Destroy(gameObject, 0.2f);
+            rbBullet.simulated = false;
 
         }
 }

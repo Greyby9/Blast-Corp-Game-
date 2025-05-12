@@ -35,7 +35,7 @@ public class EnemySpawner : MonoBehaviour
         Vector3 spawnPosition = spawnPoint.position;
 
         GameObject enemyInstance = Instantiate(enemyToSpawn, spawnPosition, Quaternion.identity);
-        
+        Debug.Log("creo un enemigo");
 
 
 

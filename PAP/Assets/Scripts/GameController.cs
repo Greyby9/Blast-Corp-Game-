@@ -11,15 +11,13 @@ public GameObject playerSMG;
 public GameObject playerPistol;
 public GameObject playerShotgun;
 private  GameObject activePlayer;
+//<<<<<<Menus
+    public GameObject menuGameOver;
+    public GameObject pauseMenu;
 public int weaponIndex=1;
-public int bulletAmountSMG= 10;
-public int bulletAmountPistol= 10;
-public int bulletAmountShotgun=10;
 public TextMeshProUGUI textBulletSMG;
 public TextMeshProUGUI textBulletPistol;
 public TextMeshProUGUI textBulletShotGun;
-public bool hasSMG;
-public bool hasShotgun;
 
 // Sho0tingPoing  SMG
 public Transform shootPointVerticallySMG;
@@ -54,6 +52,7 @@ activePlayer = playerPistol;
 playerSMG.SetActive(false);
 playerPistol.SetActive(true);
 playerShotgun.SetActive(false);
+whoIsActive();
 }
 
 
@@ -71,12 +70,12 @@ void changeWeapon()
     weaponIndex=1;
     }
     else 
-    if (Input.GetKeyDown(KeyCode.Alpha2) && hasSMG==true)
+    if (Input.GetKeyDown(KeyCode.Alpha2) && GameData.instance.hasSMG==true)
     {
     SwitchToPlayer(playerSMG);
     weaponIndex=2;
     }
-    if(Input.GetKeyDown(KeyCode.Alpha2) && hasShotgun==true){
+    if(Input.GetKeyDown(KeyCode.Alpha2) && GameData.instance.hasShotgun==true){
     SwitchToPlayer(playerShotgun);
     weaponIndex=3;
     }
@@ -99,19 +98,19 @@ if (activePlayer != newPlayer)
 }  
 }
 void whoIsActive(){
-    if (playerPistol.activeSelf){
+    if (playerPistol !=null && playerPistol.activeSelf){
         transform.position=playerPistol.transform.position;
     }
-    if (playerSMG.activeSelf){
+    if (playerPistol !=null && playerSMG.activeSelf){
         transform.position=playerSMG.transform.position;
     }
-    if(playerShotgun.activeSelf){
+    if(playerPistol !=null && playerShotgun.activeSelf){
         transform.position=playerShotgun.transform.position;
     }
 }
     void viewPoint()
 {
-        if (playerPistol.activeSelf)
+        if (playerPistol !=null && playerPistol.activeSelf)
     {
         
         Shoot.instance.shootPoint=shootPointIdlePistol;
@@ -122,7 +121,6 @@ void whoIsActive(){
     if (Input.GetKey(KeyCode.UpArrow) && !Input.GetKey(KeyCode.DownArrow) && Player.instance.enSuelo &&  !Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.RightArrow)) // Shooting Vertically
     {
     Player.instance.anim.SetBool("shootingVertically", true);
-    Debug.Log("si se pone");
     Shoot.instance.shootPoint=shootPointVerticallyPistol;
     }
     else 
@@ -210,10 +208,8 @@ void whoIsActive(){
     Shoot.instance.shootPoint=shootPointDiagonallyLeftPistol;  
     } 
     }
-        if (playerSMG.activeSelf)
+        if (playerPistol !=null && playerSMG.activeSelf)
     {
-        
-        Debug.Log("2");
         Shoot.instance.shootPoint=shootPointIdleSMG;
     if (Input.GetKey(KeyCode.UpArrow) && Input.GetKey(KeyCode.DownArrow))
     {
@@ -222,7 +218,6 @@ void whoIsActive(){
     if (Input.GetKey(KeyCode.UpArrow) && !Input.GetKey(KeyCode.DownArrow) && Player.instance.enSuelo &&  !Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.RightArrow)) // Shooting Vertically
     {
     Player.instance.anim.SetBool("shootingVertically", true);
-    Debug.Log("nosepone");
     Shoot.instance.shootPoint=shootPointVerticallySMG;
     }
     else 
@@ -410,6 +405,27 @@ void whoIsActive(){
            
 
 }
+    public void gameOver(){
+        Time.timeScale= 0f;
+        menuGameOver.SetActive(true); 
+    }
+    public void pause(){
+        Time.timeScale= 0f;
+        pauseMenu.SetActive(true); 
+    } 
+    public void continuePause(){
+        Time.timeScale= 1f;
+        pauseMenu.SetActive(false); 
+    }
+    public void restart(){
+        SceneManager.LoadScene(1);
+    }
+    public void options(){
+        Debug.Log("todavia no esta");
+    }
+    public void exit(){
+        Application.Quit();
+    }
   
 
 

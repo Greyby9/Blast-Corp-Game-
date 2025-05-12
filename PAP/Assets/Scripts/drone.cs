@@ -38,6 +38,7 @@ public class Drone : MonoBehaviour
 
     void Update()
     {
+        
         if (player == null) return;
 
         if (!exiting)

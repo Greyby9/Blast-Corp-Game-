@@ -11,8 +11,8 @@ public class DroneSpawner : MonoBehaviour
     private float timer;
     private GameObject currentDrone;
 
-    private string entrada = "left"; // Lado por el que entrará el próximo dron
-    private string salida = "right"; // Lado por el que saldrá este dron
+    private string entrada = "left";
+    private string salida = "right";
 
     public AudioClip soundFly;
 
@@ -23,9 +23,11 @@ public class DroneSpawner : MonoBehaviour
 
     void Update()
     {
+        Debug.Log("Update running"); 
         if (currentDrone != null) return;
 
         timer -= Time.deltaTime;
+        Debug.Log(timer);
 
         if (timer <= 0f)
         {

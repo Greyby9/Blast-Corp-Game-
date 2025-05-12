@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 0442a807d1a13e649b4eb0731b21ae73
+guid: a88fd20869cee0b4e9798e557fa4c2f3
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -36,7 +36,7 @@ ScriptedImporter:
     spriteMeshType: 1
     alignment: 0
     spritePivot: {x: 0.5, y: 0.5}
-    spritePixelsToUnits: 19
+    spritePixelsToUnits: 32
     spriteBorder: {x: 0, y: 0, z: 0, w: 0}
     spriteGenerateFallbackPhysicsShape: 0
     generateCubemap: 6
@@ -98,7 +98,7 @@ ScriptedImporter:
     addSortingGroup: 1
     addShadowCasters: 0
   importFileNodeState: 1
-  platformSettingsDirtyTick: 638784968272978640
+  platformSettingsDirtyTick: 638826387528777722
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -123,19 +123,19 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: Idle_Enemy1
+  - name: Frame_0
     originalName: 
-    pivot: {x: 0.5, y: 0}
-    alignment: 7
+    pivot: {x: 0.5, y: -0.10000001}
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
     rect:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 23
-      height: 39
-    spriteID: cc5a7b53c28aae54eadecac32a03c551
+      width: 24
+      height: 20
+    spriteID: 1b6993be6222f284a95c3e1a23bc3706
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -144,24 +144,114 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4}
+  - name: Frame_1
+    originalName: 
+    pivot: {x: 0.5, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 32
+      width: 20
+      height: 24
+    spriteID: 681b6a53a2dba6e4c884aa2518ffd779
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 32}
+  - name: Frame_2
+    originalName: 
+    pivot: {x: 0.5, y: -0.10000001}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 36
+      y: 4
+      width: 24
+      height: 20
+    spriteID: d9ae3098c8b38d7468a962b8919c87d4
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 36, y: 4}
+  - name: Frame_3
+    originalName: 
+    pivot: {x: 0.5, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 32
+      y: 32
+      width: 20
+      height: 24
+    spriteID: 98a6b1a2d70103d40a619a07b9db45c5
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 32, y: 32}
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: 964136318
-    name: Idle_Enemy1
+    guid: -2128191635
+    name: player jump
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: Idle_Enemy1
+    - name: Frame_0
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
         x: 0
+        y: 2
+        width: 24
+        height: 20
+      spriteId: 1b6993be6222f284a95c3e1a23bc3706
+    - name: Frame_1
+      frameIndex: 1
+      additiveSortOrder: 0
+      cellRect:
+        x: 2
         y: 0
-        width: 23
-        height: 39
-      spriteId: cc5a7b53c28aae54eadecac32a03c551
+        width: 20
+        height: 24
+      spriteId: 681b6a53a2dba6e4c884aa2518ffd779
+    - name: Frame_2
+      frameIndex: 2
+      additiveSortOrder: 0
+      cellRect:
+        x: 0
+        y: 2
+        width: 24
+        height: 20
+      spriteId: d9ae3098c8b38d7468a962b8919c87d4
+    - name: Frame_3
+      frameIndex: 3
+      additiveSortOrder: 0
+      cellRect:
+        x: 2
+        y: 0
+        width: 20
+        height: 24
+      spriteId: 98a6b1a2d70103d40a619a07b9db45c5
     linkedCells: []
     parentIndex: -1
   platformSettings:
@@ -216,5 +306,5 @@ ScriptedImporter:
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 23, y: 39}
-  previousTextureSize: {x: 32, y: 64}
+  canvasSize: {x: 24, y: 24}
+  previousTextureSize: {x: 64, y: 64}

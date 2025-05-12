@@ -80,7 +80,7 @@ public class Shoot : MonoBehaviour
             if (GameController.instance.weaponIndex == 1)
             {
               
-            if(Input.GetKey(KeyCode.S) && GameController.instance.bulletAmountPistol > 0)
+            if(Input.GetKey(KeyCode.S) && GameData.instance.bulletAmountPistol > 0)
             {
                 if(Player.instance.enSuelo && anim.GetBool("DiagonallyRight"))
                 {
@@ -110,14 +110,14 @@ public class Shoot : MonoBehaviour
                 
                 }  
                 } 
-            GameController.instance.bulletAmountPistol--;
+            GameData.instance.bulletAmountPistol--;
             updateText();
             }
         }
             if (GameController.instance.weaponIndex == 2)
             {
             Debug.Log("Aqui entra");
-            if(Input.GetKey(KeyCode.S) && GameController.instance.bulletAmountSMG > 0)
+            if(Input.GetKey(KeyCode.S) && GameData.instance.bulletAmountSMG > 0)
             {
             if(Player.instance.enSuelo && anim.GetBool("DiagonallyRight"))
             {
@@ -146,7 +146,7 @@ public class Shoot : MonoBehaviour
                     ShootBullet(180);
                 }
             }
-            GameController.instance.bulletAmountSMG--;
+            GameData.instance.bulletAmountSMG--;
             updateText();
 
             }
@@ -171,8 +171,8 @@ private void ShootBullet(float angle){
 }
    public void updateText()
     {
-            GameController.instance.textBulletSMG.text = "x" + GameController.instance.bulletAmountSMG.ToString();
-            GameController.instance.textBulletPistol.text = "x" + GameController.instance.bulletAmountPistol.ToString();
+            GameController.instance.textBulletSMG.text = "x" + GameData.instance.bulletAmountSMG.ToString();
+            GameController.instance.textBulletPistol.text = "x" + GameData.instance.bulletAmountPistol.ToString();
 
         
     }

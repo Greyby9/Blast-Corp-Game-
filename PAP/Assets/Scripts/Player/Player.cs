@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
     
     public bool lookingRight, isCollidingWithBarrier;
     
-    public float jumpForce = 10f;
+    public float jumpForce = 15f;
 
     public static Player instance;
 
@@ -49,7 +49,7 @@ public class Player : MonoBehaviour
     public bool statusDuck;
 
     void Awake()
-    {
+    {   
         instance = this;
         initialSpeedMoviment=speedMoviment;
     }
@@ -60,8 +60,7 @@ public class Player : MonoBehaviour
         originalOffsetCollider = boxCollider.offset; 
         lookingRight= true;
         anim.SetBool("onground", true);
-        StartCoroutine(waitAndExe());
-        Debug.Log("GroundLayer: " + capaSuelo.value);
+
 
         if (!PlayerPrefs.HasKey("lives"))
         {
@@ -85,10 +84,6 @@ public class Player : MonoBehaviour
         else 
         {
             anim.SetBool("onground", false);
-            if (anim.GetBool("isJump"))
-            {
-            anim.SetBool("isJump", false);
-            } 
         }
 
         duck();
@@ -177,7 +172,8 @@ public class Player : MonoBehaviour
 
 
     void duck(){
-        if(Input.GetKey(KeyCode.DownArrow) && enSuelo && !Input.GetKey(KeyCode.UpArrow)){
+        if(Input.GetKey(KeyCode.DownArrow) && enSuelo && !Input.GetKey(KeyCode.UpArrow))
+        {
             speedMoviment=0f;
             anim.SetBool("move", false);
             anim.SetBool("isDuck", true);
@@ -199,31 +195,35 @@ public class Player : MonoBehaviour
                 statusDuck=false;
             boxCollider.size = originalSizeCollider; // Restaura el tamaño original
             boxCollider.offset = originalOffsetCollider; // Restaura el offset original
-            }
+        }
     
     }
-    void jump(){
-        if (anim.GetBool("onground") && Input.GetKeyDown(KeyCode.Space) ){
-            miCuerpoRigido.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
+    void jump()
+    {
+            if(enSuelo==false)
+            {
+                anim.SetBool("isJump",true);
+            }
+            if (enSuelo==true){
+                anim.SetBool("isJump", false);
+            }         
+        if (anim.GetBool("onground") && Input.GetKeyDown(KeyCode.Space) && anim.GetBool("isDuck")==false)
+        {
+            miCuerpoRigido.linearVelocity = new Vector2(miCuerpoRigido.linearVelocity.x, jumpForce);
             soundController.Instace.exeSound(soundJump);
-        //    anim.SetBool("onground", false);
-         //   waitAndExe();
-            anim.SetBool("isJump", true);
-            anim.SetBool("isDuck", false);
-        if (anim.GetBool("isJump") && anim.GetBool("onground")){
-                anim.SetBool("onground", false);
+
         }
-        }  else  {
-            waitAndExe();
-        }
+       
     }
-    IEnumerator waitAndExe(){
-        yield return new WaitForSeconds(1f);
+ /*   IEnumerator waitAndExe(){
+        yield return new WaitForSeconds(2f);
         anim.SetBool("onground", true);
-    }
-    void endJump(){
         anim.SetBool("isJump", false);
     }
+    IEnumerator endJump(){
+        yield return new WaitForSeconds(2f);    
+        anim.SetBool("isJump", false);
+    }*/
  /*       public void loseHP(){
         anim.SetTrigger("isHit");
         lives = PlayerPrefs.GetInt("lives");
@@ -250,7 +250,7 @@ IEnumerator LoseHPCoroutine()
         PlayerPrefs.DeleteKey("lives");
 
         yield return new WaitForSeconds(timeDie); // espera a que termine la animación
-        UIController.Instance.gameOver();
+        GameController.instance.gameOver();
     }
     else if (lives > 0)
     {
@@ -307,24 +307,24 @@ IEnumerator LoseHPCoroutine()
             }           
         if (collider.gameObject.CompareTag("BoxBulletSMG")) 
         {
-        GameController.instance.bulletAmountSMG=GameController.instance.bulletAmountSMG+10;
+        GameData.instance.bulletAmountSMG=GameData.instance.bulletAmountSMG+10;
         Shoot.instance.updateText();
         Destroy(collider.gameObject); 
         }
         if (collider.gameObject.CompareTag("SMG")){
         Destroy(collider.gameObject);
-        GameController.instance.hasSMG=true;
+        GameData.instance.hasSMG=true;
         GameController.instance.spawnerEnemy.SetActive(false);
         GameController.instance.spawnerDrone.SetActive(false);  
         CanvasController.instace.changePistolBetweenSMGAds.SetActive(true);
 
         }
         if (collider.gameObject.CompareTag("BoxBulletShotgun")) {
-        GameController.instance.bulletAmountShotgun=GameController.instance.bulletAmountShotgun+10;
+        GameData.instance.bulletAmountShotgun=GameData.instance.bulletAmountShotgun+10;
         Destroy(collider.gameObject); 
             }
         if (collider.gameObject.CompareTag("BoxBulletPistols")) {
-        GameController.instance.bulletAmountPistol=GameController.instance.bulletAmountPistol+10;
+        GameData.instance.bulletAmountPistol=GameData.instance.bulletAmountPistol+10;
         Shoot.instance.updateText();
         Destroy(collider.gameObject); 
             }
