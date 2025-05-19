@@ -10,18 +10,9 @@ public class GameData : MonoBehaviour
     public int bulletAmountShotgun=10;
 
 
-
     void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject); 
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        
     }
     void Start()
     {

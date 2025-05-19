@@ -11,8 +11,7 @@ public class Shoot : MonoBehaviour
     public float bulletSpeed;
 
     public static Shoot instance;
-
-    public Transform shootPoint;    
+   
     private float shoot_time;
     private bool fistShoot;
 
@@ -33,8 +32,7 @@ public class Shoot : MonoBehaviour
 
     }
     void Start()
-    {
-    shootPoint = GameController.instance.shootPointIdlePistol;        
+    {       
      anim = GetComponent<Animator>();
      updateText(); 
     }
@@ -77,7 +75,7 @@ public class Shoot : MonoBehaviour
     }
     void shoot()
     {
-            if (GameController.instance.weaponIndex == 1)
+            if (Player.instance.weaponIndex == 1)
             {
               
             if(Input.GetKey(KeyCode.S) && GameData.instance.bulletAmountPistol > 0)
@@ -114,7 +112,7 @@ public class Shoot : MonoBehaviour
             updateText();
             }
         }
-            if (GameController.instance.weaponIndex == 2)
+            if (Player.instance.weaponIndex == 2)
             {
             Debug.Log("Aqui entra");
             if(Input.GetKey(KeyCode.S) && GameData.instance.bulletAmountSMG > 0)
@@ -155,7 +153,7 @@ public class Shoot : MonoBehaviour
 }
 private void ShootBullet(float angle){   
       
-    bullet = Instantiate(bullet1, shootPoint.position, Quaternion.identity);
+    bullet = Instantiate(bullet1, Player.instance.shootPoint.position, Quaternion.identity);
 
     bullet.transform.SetParent(null);
 

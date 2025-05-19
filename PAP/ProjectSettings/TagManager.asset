@@ -19,6 +19,7 @@ TagManager:
   - BulletRobot
   - end
   - SMG
+  - SpawnPoint
   layers:
   - Default
   - TransparentFX

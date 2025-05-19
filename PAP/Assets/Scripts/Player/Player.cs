@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
     public float initialSpeedMoviment;
 
     public float movementX;
+    public bool isDuck;
 
     
     public bool lookingRight, isCollidingWithBarrier;
@@ -34,8 +35,6 @@ public class Player : MonoBehaviour
 
     public CanvasController canvasController;
     public int lives;
-    public SpriteRenderer characterSpriteRenderer;
-    public Sprite[] weaponSprites;
 
     public bool playerStatic;
     private BoxCollider2D boxCollider;
@@ -46,20 +45,316 @@ public class Player : MonoBehaviour
     //>>>>>>>>>>>>>>>>>>Sound
     public AudioClip soundJump;
     public AudioClip soundWalk;
-    public bool statusDuck;
+    public bool hasPistol;
+    public bool hasSMG=false;
+    public bool hasShotgun=false;
+    public int weaponIndex = 1;
+
+    // Sho0tingPoing  SMG
+    public Transform shootPointLookingUpSMG;
+    public Transform shootPointDuckSMG;
+    public Transform shootPointDiagonallySMG;
+    public Transform shootPointIdleSMG;
+
+
+// Sho0tingPoing  PISTOL
+    public Transform shootPointLookingUpPistol;
+    public Transform shootPointDuckPistol;
+    public Transform shootPointDiagonallyPistol;
+    public Transform shootPointIdlePistol;
+
+//ShootingPoint Shotgun
+    public Transform shootPointLookingUpShotgun;
+    public Transform shootPointDuckShotgun;
+    public Transform shootPointDiagonallyShotgun;
+    public Transform shootPointIdleShotgun;
+    public Transform shootPoint;
+
+    void viewPoint()
+    {
+        if (weaponIndex==1)
+        {
+        shootPoint=shootPointIdlePistol;
+        if (Input.GetKey(KeyCode.UpArrow) && Input.GetKey(KeyCode.DownArrow)) //Bug
+        {
+        shootPoint=shootPointIdlePistol;
+        }
+        if (Input.GetKey(KeyCode.UpArrow) && !Input.GetKey(KeyCode.DownArrow) && enSuelo &&  !Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.RightArrow)) // Shooting Vertically
+        {
+        anim.SetBool("isLookingUp", true);
+        shootPoint=shootPointLookingUpPistol;
+        }
+        else 
+        {
+        anim.SetBool("isLookingUp", false);
+        }
+        if (Input.GetKey(KeyCode.UpArrow) && Input.GetKey(KeyCode.LeftArrow) && enSuelo && !Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.RightArrow)) //Shooting Left
+        {
+        anim.SetBool("Diagonally", true);
+        shootPoint=shootPointDiagonallyPistol;            
+        anim.SetBool("isLookingUp", false);
+        }
+        else 
+        {
+        if (movementX > 0)
+        {
+        transform.eulerAngles = new Vector3(0f, 0f, 0f);
+        shootPoint=shootPointIdlePistol;
+        } 
+        else if (movementX < 0)
+        {
+        transform.eulerAngles = new Vector3(0f, 180f, 0f); 
+        shootPoint=shootPointIdlePistol;
+        }
+        anim.SetBool("Diagonally", false);
+        }
+        if (Input.GetKey(KeyCode.UpArrow) && Input.GetKey(KeyCode.RightArrow) && enSuelo && !Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.LeftArrow)) // Shooting Right
+        {
+        anim.SetBool("Diagonally", true);
+        shootPoint=shootPointDiagonallyPistol;
+        anim.SetBool("isLookingUp", false);
+        }else {
+        if (movementX > 0)
+        {
+        transform.eulerAngles = new Vector3(0f, 0f, 0f);
+        shootPoint=shootPointIdlePistol;
+        } else if (movementX < 0)
+        {
+        transform.eulerAngles = new Vector3(0f, 180f, 0f); 
+        shootPoint=shootPointIdlePistol;
+        }
+        }
+        if (Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.UpArrow)) //isDuck
+        {
+        shootPoint=shootPointDuckPistol;
+        anim.SetBool("isDuck", true);
+        }
+        else 
+        {
+        anim.SetBool("isDuck", false);
+        }
+        if (Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.UpArrow) && !Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.RightArrow))
+        {
+        transform.eulerAngles = new Vector3(0f, 180f, 0f); 
+        shootPoint=shootPointIdlePistol;
+        }
+        if (Input.GetKey(KeyCode.RightArrow) && !Input.GetKey(KeyCode.UpArrow) && !Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.LeftArrow))
+        {
+        transform.eulerAngles = new Vector3(0f, 0f, 0f);
+        shootPoint=shootPointIdlePistol;
+        }
+        if (Input.GetKey(KeyCode.RightArrow) && Input.GetKey(KeyCode.UpArrow) &&  Input.GetKey(KeyCode.LeftArrow)) // bug
+        {
+        anim.SetBool("isLookingUp", true);
+        shootPoint=shootPointLookingUpPistol;
+        anim.SetBool("Diagonally", false);
+        }
+        if (movementX > 0 && Input.GetKey(KeyCode.RightArrow) && Input.GetKey(KeyCode.UpArrow) )
+        {
+        anim.SetBool("Diagonally", true);
+        shootPoint=shootPointDiagonallyPistol;  
+        }
+        if (movementX < 0 && Input.GetKey(KeyCode.LeftArrow) && Input.GetKey(KeyCode.UpArrow) )
+        {
+        anim.SetBool("Diagonally", true);
+        shootPoint=shootPointDiagonallyPistol;  
+        } 
+        }
+        if (weaponIndex==2)
+        {
+        shootPoint=shootPointIdleSMG;
+        if (Input.GetKey(KeyCode.UpArrow) && Input.GetKey(KeyCode.DownArrow)) //Bug
+        {
+        shootPoint=shootPointIdleSMG;
+        }
+        if (Input.GetKey(KeyCode.UpArrow) && !Input.GetKey(KeyCode.DownArrow) && enSuelo &&  !Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.RightArrow)) // Shooting Vertically
+        {
+        anim.SetBool("isLookingUp", true);
+        shootPoint=shootPointLookingUpSMG;
+        }
+        else 
+        {
+        anim.SetBool("isLookingUp", false);
+        }
+        if (Input.GetKey(KeyCode.UpArrow) && Input.GetKey(KeyCode.LeftArrow) && enSuelo && !Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.RightArrow)) //Shooting Left
+        {
+        anim.SetBool("Diagonally", true);
+        shootPoint=shootPointDiagonallySMG;            
+        anim.SetBool("isLookingUp", false);
+        }
+        else 
+        {
+        if (movementX > 0)
+        {
+        transform.eulerAngles = new Vector3(0f, 0f, 0f);
+        shootPoint=shootPointIdleSMG;
+        } 
+        else if (movementX < 0)
+        {
+        transform.eulerAngles = new Vector3(0f, 180f, 0f); 
+        shootPoint=shootPointIdleSMG;
+        }
+        anim.SetBool("Diagonally", false);
+        }
+        if (Input.GetKey(KeyCode.UpArrow) && Input.GetKey(KeyCode.RightArrow) && enSuelo && !Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.LeftArrow))
+        {
+        anim.SetBool("Diagonally", true);
+        shootPoint=shootPointDiagonallySMG;
+        anim.SetBool("isLookingUp", false);
+        }else {
+        if (movementX > 0)
+        {
+        transform.eulerAngles = new Vector3(0f, 0f, 0f);
+        shootPoint=shootPointIdleSMG;
+        } else if (movementX < 0)
+        {
+        transform.eulerAngles = new Vector3(0f, 180f, 0f); 
+        shootPoint=shootPointIdleSMG;
+        }
+        }
+        if (Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.UpArrow)) //isDuck
+        {
+        shootPoint=shootPointDuckSMG;
+        anim.SetBool("isDuck", true);
+        }
+        else 
+        {
+        anim.SetBool("isDuck", false);
+        }
+        if (Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.UpArrow) && !Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.RightArrow))
+        {
+        transform.eulerAngles = new Vector3(0f, 180f, 0f); 
+        shootPoint=shootPointIdleSMG;
+        }
+        if (Input.GetKey(KeyCode.RightArrow) && !Input.GetKey(KeyCode.UpArrow) && !Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.LeftArrow))
+        {
+        transform.eulerAngles = new Vector3(0f, 0f, 0f);
+        shootPoint=shootPointIdleSMG;
+        }
+        if (Input.GetKey(KeyCode.RightArrow) && Input.GetKey(KeyCode.UpArrow) &&  Input.GetKey(KeyCode.LeftArrow)) // bug
+        {
+        anim.SetBool("isLookingUp", true);
+        shootPoint=shootPointLookingUpSMG;
+        anim.SetBool("Diagonally", false);
+        }
+        if (movementX > 0 && Input.GetKey(KeyCode.RightArrow) && Input.GetKey(KeyCode.UpArrow) )
+        {
+        anim.SetBool("Diagonally", true);
+        shootPoint=shootPointDiagonallySMG;  
+        }
+        if (movementX < 0 && Input.GetKey(KeyCode.LeftArrow) && Input.GetKey(KeyCode.UpArrow) )
+        {
+        anim.SetBool("Diagonally", true);
+        shootPoint=shootPointDiagonallySMG;  
+        } 
+        }
+        if (weaponIndex==3)
+        {
+        shootPoint=shootPointIdleShotgun;
+        if (Input.GetKey(KeyCode.UpArrow) && Input.GetKey(KeyCode.DownArrow)) //Bug
+        {
+        shootPoint=shootPointIdleShotgun;
+        }
+        if (Input.GetKey(KeyCode.UpArrow) && !Input.GetKey(KeyCode.DownArrow) && enSuelo &&  !Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.RightArrow)) // Shooting Vertically
+        {
+        anim.SetBool("isLookingUp", true);
+        shootPoint=shootPointLookingUpShotgun;
+        }
+        else 
+        {
+        anim.SetBool("isLookingUp", false);
+        }
+        if (Input.GetKey(KeyCode.UpArrow) && Input.GetKey(KeyCode.LeftArrow) && enSuelo && !Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.RightArrow)) //Shooting Left
+        {
+        anim.SetBool("Diagonally", true);
+        shootPoint=shootPointDiagonallyShotgun;            
+        anim.SetBool("isLookingUp", false);
+        }
+        else 
+        {
+        if (movementX > 0)
+        {
+        transform.eulerAngles = new Vector3(0f, 0f, 0f);
+        shootPoint=shootPointIdleShotgun;
+        } 
+        else if (movementX < 0)
+        {
+        transform.eulerAngles = new Vector3(0f, 180f, 0f); 
+        shootPoint=shootPointIdleShotgun;
+        }
+        anim.SetBool("Diagonally", false);
+        }
+        if (Input.GetKey(KeyCode.UpArrow) && Input.GetKey(KeyCode.RightArrow) && enSuelo && !Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.LeftArrow)) // Shooting Right
+        {
+        anim.SetBool("Diagonally", true);
+        shootPoint=shootPointDiagonallyShotgun;
+        anim.SetBool("isLookingUp", false);
+        }else {
+        if (movementX > 0)
+        {
+        transform.eulerAngles = new Vector3(0f, 0f, 0f);
+        shootPoint=shootPointIdleShotgun;
+        } else if (movementX < 0)
+        {
+        transform.eulerAngles = new Vector3(0f, 180f, 0f); 
+        shootPoint=shootPointIdleShotgun;
+        }
+        }
+        if (Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.UpArrow)) //isDuck
+        {
+        shootPoint=shootPointDuckShotgun;
+        anim.SetBool("isDuck", true);
+        }
+        else 
+        {
+        anim.SetBool("isDuck", false);
+        }
+        if (Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.UpArrow) && !Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.RightArrow))
+        {
+        transform.eulerAngles = new Vector3(0f, 180f, 0f); 
+        shootPoint=shootPointIdleShotgun;
+        }
+        if (Input.GetKey(KeyCode.RightArrow) && !Input.GetKey(KeyCode.UpArrow) && !Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.LeftArrow))
+        {
+        transform.eulerAngles = new Vector3(0f, 0f, 0f);
+        shootPoint=shootPointIdleShotgun;
+        }
+        if (Input.GetKey(KeyCode.RightArrow) && Input.GetKey(KeyCode.UpArrow) &&  Input.GetKey(KeyCode.LeftArrow)) // bug
+        {
+        anim.SetBool("isLookingUp", true);
+        shootPoint=shootPointLookingUpShotgun;
+        anim.SetBool("Diagonally", false);
+        }
+        if (movementX > 0 && Input.GetKey(KeyCode.RightArrow) && Input.GetKey(KeyCode.UpArrow) )
+        {
+        anim.SetBool("Diagonally", true);
+        shootPoint=shootPointDiagonallyShotgun;  
+        }
+        if (movementX < 0 && Input.GetKey(KeyCode.LeftArrow) && Input.GetKey(KeyCode.UpArrow) )
+        {
+        anim.SetBool("Diagonally", true);
+        shootPoint=shootPointDiagonallyShotgun;  
+        } 
+        }
+
+}
+ 
 
     void Awake()
     {   
         instance = this;
         initialSpeedMoviment=speedMoviment;
+        DontDestroyOnLoad(gameObject);
     }
-    void Start(){
+    void Start()
+    {
         miCuerpoRigido = GetComponent<Rigidbody2D>();
         boxCollider = GetComponent<BoxCollider2D>();
         originalSizeCollider = boxCollider.size;
         originalOffsetCollider = boxCollider.offset; 
-        lookingRight= true;
-        anim.SetBool("onground", true);
+        anim.SetBool("onGround", true);
+        hasPistol=true;
+        weaponIndex=1;
 
 
         if (!PlayerPrefs.HasKey("lives"))
@@ -69,26 +364,30 @@ public class Player : MonoBehaviour
         
     }
 
+
     // Update is called once per frame
     void Update()
-    { 
-        staticPlayer();      
+    {
+
         canvasController.UpdateUp(PlayerPrefs.GetInt("lives"));
 
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, lengthRayCast, capaSuelo);
         enSuelo = hit.collider != null;
         if (enSuelo)
         {
-        anim.SetBool("onground", true);
-        } 
-        else 
-        {
-            anim.SetBool("onground", false);
+            anim.SetBool("onGround", true);
         }
-
+        else
+        {
+            anim.SetBool("onGround", false);
+        }
+        verifySprite();
         duck();
         jump();
-        move();  
+        move();
+        staticPlayer();
+        viewPoint();
+        changeWeapon();
 
     }
         void staticPlayer()
@@ -106,11 +405,6 @@ public class Player : MonoBehaviour
             {
             lookingRight=true;
             transform.eulerAngles = new Vector3(0f,0f,0f);
-            Debug.Log(lookingRight);
-            }
-            if (Input.GetKey(KeyCode.RightArrow) && Input.GetKey(KeyCode.UpArrow))
-            {
-                
             }
         } 
         else 
@@ -130,54 +424,73 @@ public class Player : MonoBehaviour
     }
     void move()
     {
-            movementX = 0f;
-            if (Input.GetKey(KeyCode.RightArrow) && !Input.GetKey(KeyCode.E)){
-                movementX= 1f;
-            }
-            if (Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.E)){
-                movementX= -1f;
-            }
+        movementX = 0f;
+        if (Input.GetKey(KeyCode.RightArrow) && !Input.GetKey(KeyCode.E))
+        {
+            movementX = 1f;
+        }
+        if (Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.E))
+        {
+            movementX = -1f;
+        }
 
         Vector2 posicionJug = transform.position;
 
-        if (movementX > 0 && !anim.GetBool("isDuck")) 
+        if (movementX > 0 && !isDuck)
         {
-            transform.eulerAngles = new Vector3(0f,0f,0f);
+            transform.eulerAngles = new Vector3(0f, 0f, 0f);
             lookingRight = true;
             anim.SetBool("move", true);
-        } else if (movementX < 0 && !anim.GetBool("isDuck")) 
+        }
+        else if (movementX < 0 && !isDuck)
         {
-            transform.eulerAngles = new Vector3(0f,180f,0f);
+            transform.eulerAngles = new Vector3(0f, 180f, 0f);
             lookingRight = false;
             anim.SetBool("move", true);
         }
-        else 
-        { 
+        else
+        {
             anim.SetBool("move", false);
         }
 
         if (anim.GetBool("move"))
         {
-        posicionJug = posicionJug + new Vector2 (movementX, 0f) * speedMoviment * Time.deltaTime;            
-        } 
-        else 
+            posicionJug = posicionJug + new Vector2(movementX, 0f) * speedMoviment * Time.deltaTime;
+        }
+        else
         {
             anim.SetBool("move", false);
         }
 
 
         transform.position = posicionJug;
-     
+
+    }
+public void changeWeapon()
+{
+        if (Input.GetKeyDown(KeyCode.Alpha1) && hasPistol==true)
+        {
+            weaponIndex = 1;
+            Debug.Log("1");
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2) && hasSMG == true)
+        {
+            weaponIndex = 2;
+            Debug.Log("2");
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3) && hasShotgun == true)
+        {
+            weaponIndex = 3;
+            Debug.Log("3");
+        }
 }
 
 
     void duck(){
         if(Input.GetKey(KeyCode.DownArrow) && enSuelo && !Input.GetKey(KeyCode.UpArrow))
-        {
+        { 
             speedMoviment=0f;
-            anim.SetBool("move", false);
-            anim.SetBool("isDuck", true);
-            statusDuck=true;
+            isDuck=true;
             boxCollider.size = new Vector2(originalSizeCollider.x, originalSizeCollider.y * 0.5f); // Reduce la altura a la mitad
             boxCollider.offset = new Vector2(originalOffsetCollider.x, originalOffsetCollider.y - (originalSizeCollider.y * 0.25f)); // Baja el Collider
             
@@ -189,14 +502,19 @@ public class Player : MonoBehaviour
                 lookingRight=true;
                 transform.eulerAngles = new Vector3(0f,0f,0f);
             }
-            } else {
+             else {
                 speedMoviment=initialSpeedMoviment;
-                anim.SetBool("isDuck", false);
-                statusDuck=false;
             boxCollider.size = originalSizeCollider; // Restaura el tamaño original
             boxCollider.offset = originalOffsetCollider; // Restaura el offset original
+
         }
     
+    }else
+    {
+            isDuck=false;
+            anim.SetBool("isDuck", false);
+
+    }
     }
     void jump()
     {
@@ -207,37 +525,14 @@ public class Player : MonoBehaviour
             if (enSuelo==true){
                 anim.SetBool("isJump", false);
             }         
-        if (anim.GetBool("onground") && Input.GetKeyDown(KeyCode.Space) && anim.GetBool("isDuck")==false)
-        {
-            miCuerpoRigido.linearVelocity = new Vector2(miCuerpoRigido.linearVelocity.x, jumpForce);
-            soundController.Instace.exeSound(soundJump);
+            if (anim.GetBool("onGround") && Input.GetKeyDown(KeyCode.Space) && !isDuck)
+            {
+                miCuerpoRigido.linearVelocity = new Vector2(miCuerpoRigido.linearVelocity.x, jumpForce);
+                soundController.Instace.exeSound(soundJump);
 
-        }
+            }
        
     }
- /*   IEnumerator waitAndExe(){
-        yield return new WaitForSeconds(2f);
-        anim.SetBool("onground", true);
-        anim.SetBool("isJump", false);
-    }
-    IEnumerator endJump(){
-        yield return new WaitForSeconds(2f);    
-        anim.SetBool("isJump", false);
-    }*/
- /*       public void loseHP(){
-        anim.SetTrigger("isHit");
-        lives = PlayerPrefs.GetInt("lives");
-        lives--;
-        if (lives <= 0){
-            PlayerPrefs.DeleteKey("lives");
-            UIController.Instance.gameOver();
-        }else if (lives > 0){
-            PlayerPrefs.SetInt("lives", lives);
-            SceneManager.LoadScene(1);
-            
-        }
-    }*/
-
 IEnumerator LoseHPCoroutine()
 {
     anim.SetTrigger("isHit");
@@ -262,13 +557,36 @@ IEnumerator LoseHPCoroutine()
     }
 }
     public void loseHP()
-{
-    StartCoroutine(LoseHPCoroutine());
-}
-    void OnDrawGizmos(){
-            Gizmos.color = Color.red;
-            Gizmos.DrawLine(transform.position, transform.position + Vector3.down * lengthRayCast);
+    {
+        StartCoroutine(LoseHPCoroutine());
+    }
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position, transform.position + Vector3.down * lengthRayCast);
+    }
+
+    void verifySprite()
+    {
+        if (weaponIndex==1)
+        {
+            anim.SetBool("inPistol", true);
+        } else {
+            anim.SetBool("inPistol", false);
         }
+        if (weaponIndex==2)
+        {
+            anim.SetBool("inSMG", true);
+        } else {
+            anim.SetBool("inSMG", false);
+        }
+        if (weaponIndex==3)
+        {
+            anim.SetBool("inShotgun", true);
+        } else {
+            anim.SetBool("inShotgun", false);
+        }
+    }
 
     void OnCollisionEnter2D(Collision2D collision)
     {

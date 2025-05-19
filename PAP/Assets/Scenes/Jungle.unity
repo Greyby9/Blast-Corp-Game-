@@ -763,8 +763,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1631,6 +1631,55 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &166473019
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 166473021}
+  - component: {fileID: 166473020}
+  m_Layer: 0
+  m_Name: GameData
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &166473020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 166473019}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e116ce5adde93f45bafa01128805513, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hasSMG: 0
+  hasShotgun: 0
+  bulletAmountSMG: 10
+  bulletAmountPistol: 10
+  bulletAmountShotgun: 10
+--- !u!4 &166473021
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 166473019}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2329.2761, y: 1077.2043, z: 22.610111}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &167606680
 GameObject:
   m_ObjectHideFlags: 0
@@ -1996,8 +2045,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -4004,8 +4053,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -4206,20 +4255,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnerEnemy: {fileID: 1986486700}
   spawnerDrone: {fileID: 722673155}
-  playerSMG: {fileID: 867129163}
-  playerPistol: {fileID: 644517527}
-  playerShotgun: {fileID: 732797831}
   menuGameOver: {fileID: 1702047840}
   pauseMenu: {fileID: 505082732}
   weaponIndex: 1
-  bulletAmountSMG: 100
-  bulletAmountPistol: 100
-  bulletAmountShotgun: 10
   textBulletSMG: {fileID: 378669225}
   textBulletPistol: {fileID: 187359023}
   textBulletShotGun: {fileID: 1670692222}
-  hasSMG: 0
-  hasShotgun: 0
   shootPointVerticallySMG: {fileID: 402508000}
   shootPointDuckSMG: {fileID: 180660387}
   shootPointDiagonallySMG: {fileID: 2024312599}
@@ -4235,6 +4276,10 @@ MonoBehaviour:
   shootPointDiagonallYShotgun: {fileID: 0}
   shootPointDiagonallyLeftShotgun: {fileID: 0}
   shootPointIdleShotgun: {fileID: 0}
+  playerSMG: {fileID: 0}
+  playerShotgun: {fileID: 0}
+  playerPistol: {fileID: 0}
+  activePlayer: {fileID: 0}
 --- !u!4 &395612694
 Transform:
   m_ObjectHideFlags: 0
@@ -8707,6 +8752,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 677562048}
   m_CullTransparentMesh: 1
+--- !u!1 &683030297
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 683030298}
+  m_Layer: 0
+  m_Name: SpawnPoint
+  m_TagString: SpawnPoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &683030298
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 683030297}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -8.9, y: -3, z: -0.07419712}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &688181660
 GameObject:
   m_ObjectHideFlags: 0
@@ -17459,7 +17535,7 @@ GameObject:
   - component: {fileID: 1399695522}
   m_Layer: 0
   m_Name: <<<PLAYERS
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -17480,7 +17556,6 @@ Transform:
   - {fileID: 867129164}
   - {fileID: 644517528}
   - {fileID: 732797832}
-  - {fileID: 1912418138}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1405922202
@@ -18732,8 +18807,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -19885,12 +19960,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1912418137}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 39.03518, y: -6.748348, z: -0.07419712}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1399695522}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1913837760
 GameObject:
@@ -22920,6 +22995,9 @@ SceneRoots:
   - {fileID: 1057219536}
   - {fileID: 395612694}
   - {fileID: 1215901488}
+  - {fileID: 166473021}
+  - {fileID: 1912418138}
+  - {fileID: 683030298}
   - {fileID: 1399695522}
   - {fileID: 240500870}
   - {fileID: 249885532}
