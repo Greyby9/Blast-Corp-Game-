@@ -34,11 +34,10 @@ public class CanvasController : MonoBehaviour
 
     void Update()
     {
-
+    showWeapon();
     pause();
     }
     void showWeapon(){
-        canvasPistol.SetActive(true);
         if (Player.instance.hasSMG==true)
         {
         canvasSMG.SetActive(true);

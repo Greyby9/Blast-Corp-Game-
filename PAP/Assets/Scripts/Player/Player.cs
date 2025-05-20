@@ -17,7 +17,6 @@ public class Player : MonoBehaviour
     public float movementX;
     public bool isDuck;
 
-    
     public bool lookingRight, isCollidingWithBarrier;
     
     public float jumpForce = 15f;
@@ -41,6 +40,9 @@ public class Player : MonoBehaviour
 
     private Vector2 originalSizeCollider;
     private Vector2 originalOffsetCollider;
+    public int bulletAmountSMG= 10;
+    public int bulletAmountPistol= 10;
+    public int bulletAmountShotgun=10;
 
     //>>>>>>>>>>>>>>>>>>Sound
     public AudioClip soundJump;
@@ -178,6 +180,7 @@ public class Player : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.UpArrow) && Input.GetKey(KeyCode.LeftArrow) && enSuelo && !Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.RightArrow)) //Shooting Left
         {
+        Debug.Log("left");
         anim.SetBool("Diagonally", true);
         shootPoint=shootPointDiagonallySMG;            
         anim.SetBool("isLookingUp", false);
@@ -198,6 +201,7 @@ public class Player : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.UpArrow) && Input.GetKey(KeyCode.RightArrow) && enSuelo && !Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.LeftArrow))
         {
+                Debug.Log("right");
         anim.SetBool("Diagonally", true);
         shootPoint=shootPointDiagonallySMG;
         anim.SetBool("isLookingUp", false);
@@ -233,16 +237,17 @@ public class Player : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.RightArrow) && Input.GetKey(KeyCode.UpArrow) &&  Input.GetKey(KeyCode.LeftArrow)) // bug
         {
+                Debug.Log("entro en el bug pero otro lo activa");
         anim.SetBool("isLookingUp", true);
         shootPoint=shootPointLookingUpSMG;
         anim.SetBool("Diagonally", false);
         }
-        if (movementX > 0 && Input.GetKey(KeyCode.RightArrow) && Input.GetKey(KeyCode.UpArrow) )
+        if (movementX > 0 && Input.GetKey(KeyCode.RightArrow) && Input.GetKey(KeyCode.UpArrow) && !Input.GetKey(KeyCode.LeftArrow) )
         {
         anim.SetBool("Diagonally", true);
         shootPoint=shootPointDiagonallySMG;  
         }
-        if (movementX < 0 && Input.GetKey(KeyCode.LeftArrow) && Input.GetKey(KeyCode.UpArrow) )
+        if (movementX < 0 && Input.GetKey(KeyCode.LeftArrow) && Input.GetKey(KeyCode.UpArrow) && !Input.GetKey(KeyCode.RightArrow)  )
         {
         anim.SetBool("Diagonally", true);
         shootPoint=shootPointDiagonallySMG;  
@@ -625,24 +630,24 @@ IEnumerator LoseHPCoroutine()
             }           
         if (collider.gameObject.CompareTag("BoxBulletSMG")) 
         {
-        GameData.instance.bulletAmountSMG=GameData.instance.bulletAmountSMG+10;
+        bulletAmountSMG=bulletAmountSMG+10;
         Shoot.instance.updateText();
         Destroy(collider.gameObject); 
         }
         if (collider.gameObject.CompareTag("SMG")){
         Destroy(collider.gameObject);
-        GameData.instance.hasSMG=true;
+        hasSMG=true;
         GameController.instance.spawnerEnemy.SetActive(false);
         GameController.instance.spawnerDrone.SetActive(false);  
         CanvasController.instace.changePistolBetweenSMGAds.SetActive(true);
 
         }
         if (collider.gameObject.CompareTag("BoxBulletShotgun")) {
-        GameData.instance.bulletAmountShotgun=GameData.instance.bulletAmountShotgun+10;
+        bulletAmountShotgun=bulletAmountShotgun+10;
         Destroy(collider.gameObject); 
             }
         if (collider.gameObject.CompareTag("BoxBulletPistols")) {
-        GameData.instance.bulletAmountPistol=GameData.instance.bulletAmountPistol+10;
+        bulletAmountPistol=bulletAmountPistol+10;
         Shoot.instance.updateText();
         Destroy(collider.gameObject); 
             }

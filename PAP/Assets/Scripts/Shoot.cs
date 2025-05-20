@@ -2,10 +2,11 @@ using UnityEngine;
 using TMPro;
 using System;
 using Unity.VisualScripting;
+using JetBrains.Annotations;
 
 public class Shoot : MonoBehaviour
 {
-    public GameObject bullet1, bullet;
+    public GameObject bulletStandard, bullet,bulletShotgun;
 
     public bool shootingVertically, shootingDiognally, shootingDiognallyNeg;
     public float bulletSpeed;
@@ -17,7 +18,7 @@ public class Shoot : MonoBehaviour
 
     public bool shooting;
     public CanvasController canvasController;
-    public float intervalo;  
+    public float interval;  
 
     private Animator anim;
 
@@ -38,154 +39,184 @@ public class Shoot : MonoBehaviour
     }
     void Update()
     {
-        if (Input.GetKey(KeyCode.S)){
+        intervalDeterminer();
+        if (Input.GetKey(KeyCode.S))
+        {
 
-            if (!fistShoot) 
+            if (!fistShoot)
             {
-                shoot(); 
+                shoot();
                 fistShoot = true;
-            } else if(!shooting){
+            }
+            else
+            if (!shooting)
+            {
                 fistShoot = false;
             }
-            shooting=true;
-        } else {
-            shooting=false;
+            shooting = true;
+        }
+        else
+        {
+            shooting = false;
         }
      
-        if(shooting){  
+        if(shooting)
+        {  
         shoot_time +=Time.deltaTime;
         
-            if (shoot_time >= intervalo){
+            if (shoot_time >= interval)
+            {
                 shoot();
                 shoot_time=0f;
             }
             anim.SetLayerWeight(0,0);
             anim.SetLayerWeight(1,1);
             
-        } else {
+        } else
+        {
             anim.SetLayerWeight(0,1);
             anim.SetLayerWeight(1,0);
 
-
-            
-            
         }
 
 
     }
     void shoot()
     {
-            if (Player.instance.weaponIndex == 1)
-            {
-              
-            if(Input.GetKey(KeyCode.S) && GameData.instance.bulletAmountPistol > 0)
-            {
-                if(Player.instance.enSuelo && anim.GetBool("DiagonallyRight"))
-                {
-                ShootBullet(45);
-                }else   if (Player.instance.enSuelo && anim.GetBool("DiagonallyLeft"))
-                {
-                //shootPointDiagonally.transform.eulerAngles = new Vector3(0f, 180f, 0f);
-                ShootBullet(135);
-                } else if (anim.GetBool("shootingVertically"))
-                {
-                ShootBullet(90);
-                } else if (Player.instance.movementX > 0 && anim.GetBool("move") && Player.instance.lookingRight)
-                {
-                ShootBullet(0);
-                }else if (Player.instance.movementX < 0 && anim.GetBool("move") && !Player.instance.lookingRight) {
-                ShootBullet(180);
-                } else 
-                {
-                if (Player.instance.lookingRight) 
-                {
-                    ShootBullet(0);
-                
-                }else if(!Player.instance.lookingRight)
-                {
-                    ShootBullet(180);
-                
-                
-                }  
-                } 
-            GameData.instance.bulletAmountPistol--;
-            updateText();
-            }
-        }
-            if (Player.instance.weaponIndex == 2)
-            {
-            Debug.Log("Aqui entra");
-            if(Input.GetKey(KeyCode.S) && GameData.instance.bulletAmountSMG > 0)
-            {
-            if(Player.instance.enSuelo && anim.GetBool("DiagonallyRight"))
-            {
-                ShootBullet(45);
-            }else if (Player.instance.enSuelo && anim.GetBool("DiagonallyLeft"))
-            {
-                //shootPointDiagonally.transform.eulerAngles = new Vector3(0f, 180f, 0f);
-                ShootBullet(135);
 
-            } else if (anim.GetBool("shootingVertically"))
+        if (Input.GetKey(KeyCode.S) && Player.instance.bulletAmountPistol > 0)
+        {
+            if (Player.instance.enSuelo && anim.GetBool("Diagonally") && Player.instance.lookingRight == true)
+            {
+                ShootBullet(45);
+            }
+            else
+            if (Player.instance.enSuelo && anim.GetBool("Diagonally") && Player.instance.lookingRight == false)
+            {
+                ShootBullet(135);
+            }
+            else
+            if (anim.GetBool("isLookingUp"))
             {
                 ShootBullet(90);
-            } else if (Player.instance.movementX > 0 && anim.GetBool("move") && Player.instance.lookingRight)
+            }
+            else
+            if (Player.instance.movementX > 0 && anim.GetBool("move") && Player.instance.lookingRight)
             {
                 ShootBullet(0);
-            } else if (Player.instance.movementX < 0 && anim.GetBool("move") && !Player.instance.lookingRight) 
+            }
+            else if (Player.instance.movementX < 0 && anim.GetBool("move") && !Player.instance.lookingRight)
             {
                 ShootBullet(180);
-            } else 
+            }
+            else
             {
-                if (Player.instance.lookingRight) 
+                if (Player.instance.lookingRight)
                 {
                     ShootBullet(0);
-                } else if (!Player.instance.lookingRight)
+
+                }
+                else if (!Player.instance.lookingRight)
                 {
                     ShootBullet(180);
+
+
                 }
             }
-            GameData.instance.bulletAmountSMG--;
-            updateText();
-
-            }
-              
-            }
-}
-private void ShootBullet(float angle){   
-      
-    bullet = Instantiate(bullet1, Player.instance.shootPoint.position, Quaternion.identity);
-
-    bullet.transform.SetParent(null);
-
-    // Convierte el ángulo en una dirección (usando seno y coseno)
-    float radianes = angle * Mathf.Deg2Rad;
-    Vector2 direction = new Vector2(Mathf.Cos(radianes), Mathf.Sin(radianes));
-
-
-    bullet.GetComponent<Rigidbody2D>().linearVelocity = direction * bulletSpeed;
-
-    soundController.Instace.exeSound(soundShot);
-    Debug.Log($"Disparando en ángulo: {angle} grados");
-}
-   public void updateText()
+            verifyWhoShoot();
+        }
+    }
+    void verifyWhoShoot()
     {
-            GameController.instance.textBulletSMG.text = "x" + GameData.instance.bulletAmountSMG.ToString();
-            GameController.instance.textBulletPistol.text = "x" + GameData.instance.bulletAmountPistol.ToString();
+            if (whoIs() == 1)
+            {
+                Player.instance.bulletAmountPistol--;
+            }
+            if (whoIs() == 2)
+            {
+                Player.instance.bulletAmountSMG--;
+            }
+            if (whoIs() == 3)
+            {
+                Player.instance.bulletAmountShotgun--;
+            }
+            updateText();
+    }
+    void intervalDeterminer()
+    {
+            if (whoIs() == 1)
+            {
+                interval=5;
+            }
+            if (whoIs() == 2)
+            {
+                interval = 2;
+            }
+            if (whoIs() == 3)
+            {
+                interval=7;
+            }  
+    }
+        
+    int whoIs()
+    {
+            if (Player.instance.weaponIndex == 1)
+            {
+                return 1;
+            }
+            if (Player.instance.weaponIndex == 2)
+            {
+                return 2;
+            }
+            if (Player.instance.weaponIndex == 3)
+            {
+                return 3;
+            }
+            return 1;     
+
+    }
+       
+
+    
+private void ShootBullet(float angle){
+
+        if (whoIs() == 1 | whoIs() == 2)
+        {
+            bullet = Instantiate(bulletStandard, Player.instance.shootPoint.position, Quaternion.identity);
+            bullet.transform.SetParent(null, true);
+    
+            float radianes = angle * Mathf.Deg2Rad;
+            Vector2 direction = new Vector2(Mathf.Cos(radianes), Mathf.Sin(radianes));
+
+
+            bullet.GetComponent<Rigidbody2D>().linearVelocity = direction * bulletSpeed;
+
+            soundController.Instace.exeSound(soundShot);
+        }
+        if (whoIs() == 3)
+        {
+            bullet = Instantiate(bulletShotgun, Player.instance.shootPoint.position, Quaternion.identity);            
+        }
+
+
+}
+    public void updateText()
+    {
+        if (Player.instance.hasPistol)
+        {
+            GameController.instance.textBulletPistol.text = "x" + Player.instance.bulletAmountPistol.ToString();
+        }
+        if (Player.instance.hasSMG)
+        {
+             GameController.instance.textBulletSMG.text = "x" + Player.instance.bulletAmountSMG.ToString();           
+        }
+        if (Player.instance.hasShotgun)
+        {
+             GameController.instance.textBulletShotGun.text = "x" + Player.instance.bulletAmountShotgun.ToString();           
+        }
+            
 
         
     }
 
-
-
-
-
-
-
-   /* void OnTriggerEnter2D(Collider2D collider)
-    {
-        if (collider.gameObject.CompareTag("BoxDanger")) {
-            Debug.Log("CAJA DE BALAS");
-            Destroy(collider.gameObject);
-        }
-    }*/
 }

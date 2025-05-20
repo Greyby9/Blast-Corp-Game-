@@ -15583,11 +15583,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e116ce5adde93f45bafa01128805513, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hasSMG: 0
-  hasShotgun: 0
-  bulletAmountSMG: 10
-  bulletAmountPistol: 10
-  bulletAmountShotgun: 10
 --- !u!1 &1196985246
 GameObject:
   m_ObjectHideFlags: 0
@@ -19424,6 +19419,7 @@ GameObject:
   - component: {fileID: 1674702095}
   - component: {fileID: 1674702094}
   - component: {fileID: 1674702099}
+  - component: {fileID: 1674702100}
   m_Layer: 0
   m_Name: PLAYER
   m_TagString: Untagged
@@ -19629,9 +19625,12 @@ MonoBehaviour:
   canvasController: {fileID: 1855338928}
   lives: 3
   playerStatic: 0
+  bulletAmountSMG: 10
+  bulletAmountPistol: 10
+  bulletAmountShotgun: 10
   soundJump: {fileID: 0}
   soundWalk: {fileID: 0}
-  hasPistol: 0
+  hasPistol: 1
   hasSMG: 0
   hasShotgun: 0
   weaponIndex: 1
@@ -19648,6 +19647,29 @@ MonoBehaviour:
   shootPointDiagonallyShotgun: {fileID: 1503131440}
   shootPointIdleShotgun: {fileID: 1323183431}
   shootPoint: {fileID: 0}
+--- !u!114 &1674702100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1674702093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e6f6a3966c68fa4398659aa41cc3b89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletStandard: {fileID: 438598826137182229, guid: 7b8400b4336858c4cacb055304b407d5, type: 3}
+  bullet: {fileID: 0}
+  bulletShotgun: {fileID: 1944023075162098217, guid: 0405619bff1c6e04fa8b8b66b9ff782a, type: 3}
+  shootingVertically: 0
+  shootingDiognally: 0
+  shootingDiognallyNeg: 1
+  bulletSpeed: 7
+  shooting: 0
+  canvasController: {fileID: 1855338928}
+  interval: 0
+  soundShot: {fileID: 0}
 --- !u!1 &1702047840
 GameObject:
   m_ObjectHideFlags: 0

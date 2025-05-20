@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 8519ed48c8370cd47a9f1ab3303e4d29
+guid: ed22ade6a4b488d4b886040bccf925a7
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -36,7 +36,7 @@ ScriptedImporter:
     spriteMeshType: 1
     alignment: 0
     spritePivot: {x: 0.5, y: 0.5}
-    spritePixelsToUnits: 19
+    spritePixelsToUnits: 32
     spriteBorder: {x: 0, y: 0, z: 0, w: 0}
     spriteGenerateFallbackPhysicsShape: 0
     generateCubemap: 6
@@ -98,7 +98,7 @@ ScriptedImporter:
     addSortingGroup: 1
     addShadowCasters: 0
   importFileNodeState: 1
-  platformSettingsDirtyTick: 638827521399360925
+  platformSettingsDirtyTick: 638832932939921526
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -123,19 +123,40 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: player diagonal shotgun
+  - name: Frame_0
     originalName: 
-    pivot: {x: 0.46428573, y: 0}
-    alignment: 9
+    pivot: {x: 0, y: 0.5}
+    alignment: 4
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
     rect:
       serializedVersion: 2
       x: 4
-      y: 4
-      width: 28
-      height: 45
-    spriteID: 276ce6d86c1c7874280bb7eb816c3742
+      y: 51
+      width: 31
+      height: 36
+    spriteID: 314d2c12e95710f46b8bad70c7aa8e71
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 51}
+  - name: Frame_1
+    originalName: 
+    pivot: {x: 0, y: 0.5}
+    alignment: 4
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 5
+      y: 5
+      width: 57
+      height: 39
+    spriteID: 166f0226103ade64bbd6310f7357c1c4
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -144,19 +165,19 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4}
-  - name: Frame_1
+  - name: Frame_2
     originalName: 
-    pivot: {x: 0.4814815, y: 0}
-    alignment: 9
+    pivot: {x: 0, y: 0.5}
+    alignment: 4
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
     rect:
       serializedVersion: 2
-      x: 4
-      y: 57
-      width: 27
-      height: 44
-    spriteID: 11d771bffd41da24e957dc051219d9d2
+      x: 69
+      y: 4
+      width: 38
+      height: 36
+    spriteID: 77b83621363c5af4aa0a06244fe954a9
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -164,12 +185,54 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 57}
+    uvTransform: {x: 69, y: 4}
+  - name: Frame_3
+    originalName: 
+    pivot: {x: 0, y: 0.5}
+    alignment: 4
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 76
+      y: 51
+      width: 23
+      height: 24
+    spriteID: 00f5ea9e7bd86a64ca7b0669a26a9969
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 75, y: 51}
+  - name: Frame_4
+    originalName: 
+    pivot: {x: 0, y: 0.5}
+    alignment: 4
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 43
+      y: 51
+      width: 24
+      height: 25
+    spriteID: 0535371e6e3734742917d78f02f98f32
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 43, y: 51}
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: 190214600
-    name: player diagonal shotgun
+    guid: -1621471328
+    name: shotgun bullet
     layerFlags: 0
     layerType: 0
     blendMode: 0
@@ -178,20 +241,47 @@ ScriptedImporter:
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 19
-        y: 0
-        width: 28
-        height: 45
-      spriteId: 276ce6d86c1c7874280bb7eb816c3742
+        x: 0
+        y: 3
+        width: 31
+        height: 36
+      spriteId: 314d2c12e95710f46b8bad70c7aa8e71
     - name: Frame_1
       frameIndex: 1
       additiveSortOrder: 0
       cellRect:
-        x: 19
+        x: 1
         y: 0
-        width: 27
-        height: 44
-      spriteId: 11d771bffd41da24e957dc051219d9d2
+        width: 57
+        height: 39
+      spriteId: 166f0226103ade64bbd6310f7357c1c4
+    - name: Frame_2
+      frameIndex: 2
+      additiveSortOrder: 0
+      cellRect:
+        x: 1
+        y: 4
+        width: 38
+        height: 36
+      spriteId: 77b83621363c5af4aa0a06244fe954a9
+    - name: Frame_3
+      frameIndex: 3
+      additiveSortOrder: 0
+      cellRect:
+        x: 2
+        y: 9
+        width: 23
+        height: 24
+      spriteId: 00f5ea9e7bd86a64ca7b0669a26a9969
+    - name: Frame_4
+      frameIndex: 4
+      additiveSortOrder: 0
+      cellRect:
+        x: 2
+        y: 9
+        width: 24
+        height: 25
+      spriteId: 0535371e6e3734742917d78f02f98f32
     linkedCells: []
     parentIndex: -1
   platformSettings:
@@ -246,5 +336,5 @@ ScriptedImporter:
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 64, y: 45}
-  previousTextureSize: {x: 64, y: 128}
+  canvasSize: {x: 58, y: 40}
+  previousTextureSize: {x: 128, y: 128}
