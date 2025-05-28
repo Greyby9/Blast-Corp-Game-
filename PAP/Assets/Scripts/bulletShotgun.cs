@@ -16,7 +16,6 @@ public class bulletShotgun : MonoBehaviour
 void OnTriggerEnter2D(Collider2D collider)
 {
     if (collider.gameObject.CompareTag("Player")) {
-        Debug.Log("10 balas de escopeta");
         Destroy(collider.gameObject); 
 
 

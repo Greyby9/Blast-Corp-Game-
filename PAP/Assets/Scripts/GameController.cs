@@ -11,11 +11,6 @@ public class GameController : MonoBehaviour
     //<<<<<<Menus
     public GameObject menuGameOver;
     public GameObject pauseMenu;
-    public TextMeshProUGUI textBulletSMG;
-    public TextMeshProUGUI textBulletPistol;
-    public TextMeshProUGUI textBulletShotGun;
-
-    public  GameObject activePlayer;
 
 
 
@@ -26,14 +21,13 @@ public class GameController : MonoBehaviour
        if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
 
         }
         else
         {
             Destroy(gameObject);
         }
-        DontDestroyOnLoad(gameObject);
+        
         
 }
 void Start()
@@ -46,7 +40,8 @@ void Update()
 
 }
 
-    public void gameOver(){
+    public void gameOver()
+    {
         Time.timeScale= 0f;
         menuGameOver.SetActive(true); 
     }
@@ -62,7 +57,7 @@ void Update()
         SceneManager.LoadScene(1);
     }
     public void options(){
-        Debug.Log("todavia no esta");
+        // noesta
     }
     public void exit(){
         Application.Quit();

@@ -13,6 +13,8 @@ public class EnemySpawner : MonoBehaviour
 
     void Update()
     {
+
+        playerTransform = Player.instance.transform;
         if (playerTransform == null) return;
 
         timer += Time.deltaTime;
@@ -35,7 +37,6 @@ public class EnemySpawner : MonoBehaviour
         Vector3 spawnPosition = spawnPoint.position;
 
         GameObject enemyInstance = Instantiate(enemyToSpawn, spawnPosition, Quaternion.identity);
-        Debug.Log("creo un enemigo");
 
 
 

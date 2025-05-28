@@ -24,7 +24,6 @@ public class MenuInicial : MonoBehaviour
     }
 
     public void exit(){
-        Debug.Log("Saliiii");
         Application.Quit();
     }
 

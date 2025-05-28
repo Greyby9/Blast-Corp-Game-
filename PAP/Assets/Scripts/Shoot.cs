@@ -3,46 +3,77 @@ using TMPro;
 using System;
 using Unity.VisualScripting;
 using JetBrains.Annotations;
+using System.Collections;
+using UnityEngine.UI;
 
 public class Shoot : MonoBehaviour
 {
-    public GameObject bulletStandard, bullet,bulletShotgun;
+    public GameObject bulletStandard, bullet, bulletShotgun;
 
     public bool shootingVertically, shootingDiognally, shootingDiognallyNeg;
     public float bulletSpeed;
 
     public static Shoot instance;
-   
+
     private float shoot_time;
     private bool fistShoot;
 
     public bool shooting;
-    public CanvasController canvasController;
-    public float interval;  
+    private float interval;
 
     private Animator anim;
 
     // Sound
     public AudioClip soundShot;
 
+    public float intervalPistol;
+    public float intervalSMG;
+    public float intervalShotgun;
+    public Image circle;
+
 
 
     void Awake()
     {
-        instance=this;
+        instance = this;
 
     }
     void Start()
-    {       
-     anim = GetComponent<Animator>();
-     updateText(); 
+    {
+        anim = GetComponent<Animator>();
+        updateText();
     }
     void Update()
     {
         intervalDeterminer();
-        if (Input.GetKey(KeyCode.S))
+
+
+        /*if (GameData.instance.weaponIndex == 3)
+        {
+            if (shooting)
+            {
+                shoot_time += Time.deltaTime;
+                circle.fillAmount = shoot_time / intervalShotgun;
+
+                if (shoot_time >= intervalShotgun)
+                {
+                    circle.fillAmount = 1f;
+                }
+            }
+            else
+            {
+                circle.fillAmount = 1f; 
+            }
+        }
+        else
         {
 
+            circle.fillAmount = 0f;
+        }*/ // La rueda que quiero poner estilo minecaft para la escopeta
+    
+        if (Input.GetKey(KeyCode.S))
+        {
+            shooting = true;
             if (!fistShoot)
             {
                 shoot();
@@ -53,29 +84,40 @@ public class Shoot : MonoBehaviour
             {
                 fistShoot = false;
             }
-            shooting = true;
+
         }
         else
         {
             shooting = false;
         }
-     
-        if(shooting)
-        {  
-        shoot_time +=Time.deltaTime;
-        
+
+        if (shooting)
+        {
+            shoot_time += Time.deltaTime;
+
             if (shoot_time >= interval)
             {
+
+                anim.SetLayerWeight(0, 0);
+                anim.SetLayerWeight(1, 1);
+                StartCoroutine(ESPERARTIMEPO());
+                anim.SetLayerWeight(0, 1);
+                anim.SetLayerWeight(1, 0);                
                 shoot();
-                shoot_time=0f;
+                shoot_time = 0f;
             }
-            anim.SetLayerWeight(0,0);
-            anim.SetLayerWeight(1,1);
-            
-        } else
+            else
+            {
+
+                anim.SetLayerWeight(0, 1);
+                anim.SetLayerWeight(1, 0);
+            }
+        }
+        else
         {
-            anim.SetLayerWeight(0,1);
-            anim.SetLayerWeight(1,0);
+
+            anim.SetLayerWeight(0, 1);
+            anim.SetLayerWeight(1, 0);
 
         }
 
@@ -84,7 +126,7 @@ public class Shoot : MonoBehaviour
     void shoot()
     {
 
-        if (Input.GetKey(KeyCode.S) && Player.instance.bulletAmountPistol > 0)
+        if (Input.GetKey(KeyCode.S) && amountBullets() > 0 && Player.instance.anim.GetBool("isJump")==false)
         {
             if (Player.instance.enSuelo && anim.GetBool("Diagonally") && Player.instance.lookingRight == true)
             {
@@ -126,65 +168,82 @@ public class Shoot : MonoBehaviour
             verifyWhoShoot();
         }
     }
-    void verifyWhoShoot()
+    void verifyWhoShoot() //Calcula Quantas BALAS tem
     {
-            if (whoIs() == 1)
-            {
-                Player.instance.bulletAmountPistol--;
-            }
-            if (whoIs() == 2)
-            {
-                Player.instance.bulletAmountSMG--;
-            }
-            if (whoIs() == 3)
-            {
-                Player.instance.bulletAmountShotgun--;
-            }
-            updateText();
+        if (whoIs() == 1)
+        {
+            GameData.instance.bulletAmountPistol--;
+        }
+        if (whoIs() == 2)
+        {
+            GameData.instance.bulletAmountSMG--;
+        }
+        if (whoIs() == 3)
+        {
+            GameData.instance.bulletAmountShotgun--;
+        }
+        updateText();
     }
-    void intervalDeterminer()
+    int amountBullets() //Retorna Quantidade de Balas que tem
     {
-            if (whoIs() == 1)
-            {
-                interval=5;
-            }
-            if (whoIs() == 2)
-            {
-                interval = 2;
-            }
-            if (whoIs() == 3)
-            {
-                interval=7;
-            }  
+        if (whoIs() == 1)
+        {
+            return GameData.instance.bulletAmountPistol;
+        }
+        if (whoIs() == 2)
+        {
+            return GameData.instance.bulletAmountSMG;
+        }
+        if (whoIs() == 3)
+        {
+            return GameData.instance.bulletAmountShotgun;
+        }
+        return 0;
     }
-        
+    void intervalDeterminer() // Tempo entre balas por armas
+    {
+        if (whoIs() == 1)
+        {
+            interval = intervalPistol;
+        }
+        if (whoIs() == 2)
+        {
+            interval = intervalSMG;
+        }
+        if (whoIs() == 3)
+        {
+            interval = intervalShotgun;
+        }
+    }
+
     int whoIs()
     {
-            if (Player.instance.weaponIndex == 1)
-            {
-                return 1;
-            }
-            if (Player.instance.weaponIndex == 2)
-            {
-                return 2;
-            }
-            if (Player.instance.weaponIndex == 3)
-            {
-                return 3;
-            }
-            return 1;     
+        if (GameData.instance.weaponIndex == 1)
+        {
+            return 1;
+        }
+        if (GameData.instance.weaponIndex == 2)
+        {
+            return 2;
+        }
+        if (GameData.instance.weaponIndex == 3)
+        {
+            return 3;
+        }
+        return 1;
 
     }
-       
 
-    
-private void ShootBullet(float angle){
+
+
+    private void ShootBullet(float angle)
+    {
 
         if (whoIs() == 1 | whoIs() == 2)
         {
             bullet = Instantiate(bulletStandard, Player.instance.shootPoint.position, Quaternion.identity);
-            bullet.transform.SetParent(null, true);
-    
+            bullet.transform.SetParent(null);
+
             float radianes = angle * Mathf.Deg2Rad;
             Vector2 direction = new Vector2(Mathf.Cos(radianes), Mathf.Sin(radianes));
 
@@ -195,28 +254,34 @@ private void ShootBullet(float angle){
         }
         if (whoIs() == 3)
         {
-            bullet = Instantiate(bulletShotgun, Player.instance.shootPoint.position, Quaternion.identity);            
+            bullet = Instantiate(bulletShotgun, Player.instance.shootPoint.position, Quaternion.identity);
+            bullet.transform.SetParent(Player.instance.transform);
         }
 
 
-}
+    }
     public void updateText()
     {
-        if (Player.instance.hasPistol)
+        if (GameData.instance.hasPistol)
         {
-            GameController.instance.textBulletPistol.text = "x" + Player.instance.bulletAmountPistol.ToString();
+            CanvasController.instance.textBulletPistol.text = "x" + GameData.instance.bulletAmountPistol.ToString();
         }
-        if (Player.instance.hasSMG)
+        if (GameData.instance.hasSMG)
         {
-             GameController.instance.textBulletSMG.text = "x" + Player.instance.bulletAmountSMG.ToString();           
+            CanvasController.instance.textBulletSMG.text = "x" + GameData.instance.bulletAmountSMG.ToString();
         }
-        if (Player.instance.hasShotgun)
+        if (GameData.instance.hasShotgun)
         {
-             GameController.instance.textBulletShotGun.text = "x" + Player.instance.bulletAmountShotgun.ToString();           
+            CanvasController.instance.textBulletShotGun.text = "x" + GameData.instance.bulletAmountShotgun.ToString();
         }
-            
 
-        
+
+
     }
+    IEnumerator ESPERARTIMEPO()
+    {
+        yield return new WaitForSeconds(0.15f);
+    }
+
 
 }

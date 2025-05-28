@@ -130,7 +130,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletCounter: 0
-  bulletTime: 3
+  bulletTime: 5
 --- !u!61 &5145782222735435243
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -168,7 +168,7 @@ BoxCollider2D:
   m_Offset: {x: -0.0078125, y: 0.1171875}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.53333336, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 0.234375, y: 0.234375}
     newSize: {x: 0.15, y: 0.15}
     adaptiveTilingThreshold: 0.5

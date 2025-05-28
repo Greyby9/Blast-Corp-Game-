@@ -40,6 +40,7 @@ public class TowerPatrolShooter : MonoBehaviour
 
     void Update()
     {
+        player = Player.instance.transform;
         
         float distanceToPlayer = Vector2.Distance(transform.position, player.position);
 
@@ -86,7 +87,7 @@ public class TowerPatrolShooter : MonoBehaviour
         {
             Shoot(firePointLeftDown);
             anim.SetBool("shootLeftDown", true);
-            Debug.Log("se activa");
+
         } else {
             anim.SetBool("shootLeftDown", false);
         }

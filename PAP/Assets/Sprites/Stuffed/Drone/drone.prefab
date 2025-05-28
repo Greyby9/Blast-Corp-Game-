@@ -129,7 +129,7 @@ MonoBehaviour:
   exitSpeed: 10
   bulletDrone: {fileID: 3959740784649286256, guid: b03f736dc6e960d438565f46e1aae65f, type: 3}
   player: {fileID: 0}
-  hoverHeight: 5
+  hoverHeight: 7
   shootInterval: 1
   hoverDuration: 4
   exitOffset: 10

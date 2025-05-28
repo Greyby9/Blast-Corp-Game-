@@ -16,7 +16,6 @@ public class bulletPistols : MonoBehaviour
 void OnTriggerEnter2D(Collider2D collider)
 {
     if (collider.gameObject.CompareTag("Player")) {
-        Debug.Log("10 balas de pistolas");
         Destroy(collider.gameObject); 
 
 

@@ -23,11 +23,10 @@ public class DroneSpawner : MonoBehaviour
 
     void Update()
     {
-        Debug.Log("Update running"); 
+        player = Player.instance.transform;
         if (currentDrone != null) return;
 
         timer -= Time.deltaTime;
-        Debug.Log(timer);
 
         if (timer <= 0f)
         {

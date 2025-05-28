@@ -38,7 +38,6 @@ public class CameraBroundFollow : MonoBehaviour
             if (posicionJug.x >= rightLimit.position.x) {
                 posicionJug.x = rightLimit.position.x;
                 cameraStopped = true;
-                Debug.Log("pasa");
 
             }
 
@@ -60,7 +59,6 @@ public class CameraBroundFollow : MonoBehaviour
     void OnCollisionStay2D(Collision2D collision)
     {
             if (collision.gameObject.tag == "end") {
-                Debug.Log("llego");
             }
     }
 

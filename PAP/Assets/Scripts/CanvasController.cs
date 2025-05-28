@@ -7,20 +7,31 @@ using System.ComponentModel;
 
 public class CanvasController : MonoBehaviour
 {
-    public static CanvasController instace;
-    public int currentWeaponIndex = 0;
+    public static CanvasController instance;
     public GameObject menuOptions;
     public GameObject mainPause;
     public AudioMixer audioMixer;
     public int lifeAmount;
     public TextMeshProUGUI textLife;
+
+    public TextMeshProUGUI textBulletSMG;
+    public TextMeshProUGUI textBulletPistol;
+    public TextMeshProUGUI textBulletShotGun;
+
     public GameObject canvasPistol;
     public GameObject canvasSMG;
     public GameObject canvasShotgun;
     public GameObject changePistolBetweenSMGAds;
     void Awake()
     {
-        instace = this;
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject); // evita duplicados
+        }
     }
     void Start()
     {
@@ -34,15 +45,16 @@ public class CanvasController : MonoBehaviour
 
     void Update()
     {
+    UpdateUp(PlayerPrefs.GetInt("lives"));
     showWeapon();
     pause();
     }
     void showWeapon(){
-        if (Player.instance.hasSMG==true)
+        if (GameData.instance.hasSMG==true)
         {
         canvasSMG.SetActive(true);
         }
-        if(Player.instance.hasShotgun==true){
+        if(GameData.instance.hasShotgun==true){
         canvasShotgun.SetActive(true);
         }
         if (changePistolBetweenSMGAds.activeSelf){
@@ -59,19 +71,7 @@ public class CanvasController : MonoBehaviour
     
     public void UpdateUp(int lives)
     {
-        if(lives == 3){
-        lifeAmount=3;
-        textLife.text = "x" + lifeAmount.ToString();
-        }
-        if(lives == 2){
-        lifeAmount=2;
-        textLife.text = "x" + lifeAmount.ToString();
-        }
-        if(lives == 1){
-        lifeAmount=1;
-        textLife.text = "x" + lifeAmount.ToString();  
-        }
-
+        textLife.text = "x" + GameData.instance.playerHP.ToString();
     }
     public void options(){
         menuOptions.SetActive(true);
@@ -88,7 +88,8 @@ public class CanvasController : MonoBehaviour
         menuOptions.SetActive(false);
         mainPause.SetActive(true);
     }
-    public void soloparamanana(){
+    public void play()
+    {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         Time.timeScale = 1f;
     }

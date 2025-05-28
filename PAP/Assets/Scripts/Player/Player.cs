@@ -10,9 +10,9 @@ using System.Collections;
 
 public class Player : MonoBehaviour
 {
-    public int playerHP;
     public float speedMoviment;
     public float initialSpeedMoviment;
+    public Transform respawnPoint;
 
     public float movementX;
     public bool isDuck;
@@ -32,25 +32,18 @@ public class Player : MonoBehaviour
     public Animator anim;
     public float timeDie;
 
-    public CanvasController canvasController;
-    public int lives;
+  //  public CanvasController canvasController;
 
     public bool playerStatic;
     private BoxCollider2D boxCollider;
 
     private Vector2 originalSizeCollider;
     private Vector2 originalOffsetCollider;
-    public int bulletAmountSMG= 10;
-    public int bulletAmountPistol= 10;
-    public int bulletAmountShotgun=10;
 
     //>>>>>>>>>>>>>>>>>>Sound
     public AudioClip soundJump;
     public AudioClip soundWalk;
-    public bool hasPistol;
-    public bool hasSMG=false;
-    public bool hasShotgun=false;
-    public int weaponIndex = 1;
+
 
     // Sho0tingPoing  SMG
     public Transform shootPointLookingUpSMG;
@@ -74,7 +67,7 @@ public class Player : MonoBehaviour
 
     void viewPoint()
     {
-        if (weaponIndex==1)
+        if (GameData.instance.weaponIndex==1)
         {
         shootPoint=shootPointIdlePistol;
         if (Input.GetKey(KeyCode.UpArrow) && Input.GetKey(KeyCode.DownArrow)) //Bug
@@ -162,7 +155,7 @@ public class Player : MonoBehaviour
         shootPoint=shootPointDiagonallyPistol;  
         } 
         }
-        if (weaponIndex==2)
+        if (GameData.instance.weaponIndex==2)
         {
         shootPoint=shootPointIdleSMG;
         if (Input.GetKey(KeyCode.UpArrow) && Input.GetKey(KeyCode.DownArrow)) //Bug
@@ -180,7 +173,6 @@ public class Player : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.UpArrow) && Input.GetKey(KeyCode.LeftArrow) && enSuelo && !Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.RightArrow)) //Shooting Left
         {
-        Debug.Log("left");
         anim.SetBool("Diagonally", true);
         shootPoint=shootPointDiagonallySMG;            
         anim.SetBool("isLookingUp", false);
@@ -201,7 +193,6 @@ public class Player : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.UpArrow) && Input.GetKey(KeyCode.RightArrow) && enSuelo && !Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.LeftArrow))
         {
-                Debug.Log("right");
         anim.SetBool("Diagonally", true);
         shootPoint=shootPointDiagonallySMG;
         anim.SetBool("isLookingUp", false);
@@ -237,7 +228,6 @@ public class Player : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.RightArrow) && Input.GetKey(KeyCode.UpArrow) &&  Input.GetKey(KeyCode.LeftArrow)) // bug
         {
-                Debug.Log("entro en el bug pero otro lo activa");
         anim.SetBool("isLookingUp", true);
         shootPoint=shootPointLookingUpSMG;
         anim.SetBool("Diagonally", false);
@@ -253,7 +243,7 @@ public class Player : MonoBehaviour
         shootPoint=shootPointDiagonallySMG;  
         } 
         }
-        if (weaponIndex==3)
+        if (GameData.instance.weaponIndex==3)
         {
         shootPoint=shootPointIdleShotgun;
         if (Input.GetKey(KeyCode.UpArrow) && Input.GetKey(KeyCode.DownArrow)) //Bug
@@ -346,10 +336,18 @@ public class Player : MonoBehaviour
  
 
     void Awake()
-    {   
-        instance = this;
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject); // persiste GameController
+        }
+        else
+        {
+            Destroy(gameObject); // evita duplicados
+        }
+
         initialSpeedMoviment=speedMoviment;
-        DontDestroyOnLoad(gameObject);
     }
     void Start()
     {
@@ -358,13 +356,12 @@ public class Player : MonoBehaviour
         originalSizeCollider = boxCollider.size;
         originalOffsetCollider = boxCollider.offset; 
         anim.SetBool("onGround", true);
-        hasPistol=true;
-        weaponIndex=1;
-
+        GameData.instance.hasPistol=true;
+        GameData.instance.weaponIndex=1;
 
         if (!PlayerPrefs.HasKey("lives"))
         {
-        PlayerPrefs.SetInt("lives", playerHP);
+        PlayerPrefs.SetInt("lives", GameData.instance.playerHP);
         }
         
     }
@@ -374,7 +371,7 @@ public class Player : MonoBehaviour
     void Update()
     {
 
-        canvasController.UpdateUp(PlayerPrefs.GetInt("lives"));
+      //  canvasController.UpdateUp(PlayerPrefs.GetInt("lives")); // Vidas
 
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, lengthRayCast, capaSuelo);
         enSuelo = hit.collider != null;
@@ -473,20 +470,17 @@ public class Player : MonoBehaviour
     }
 public void changeWeapon()
 {
-        if (Input.GetKeyDown(KeyCode.Alpha1) && hasPistol==true)
+        if (Input.GetKeyDown(KeyCode.Alpha1) && GameData.instance.hasPistol==true)
         {
-            weaponIndex = 1;
-            Debug.Log("1");
+            GameData.instance.weaponIndex = 1;
         }
-        if (Input.GetKeyDown(KeyCode.Alpha2) && hasSMG == true)
+        if (Input.GetKeyDown(KeyCode.Alpha2) && GameData.instance.hasSMG == true)
         {
-            weaponIndex = 2;
-            Debug.Log("2");
+            GameData.instance.weaponIndex = 2;
         }
-        if (Input.GetKeyDown(KeyCode.Alpha3) && hasShotgun == true)
+        if (Input.GetKeyDown(KeyCode.Alpha3) && GameData.instance.hasShotgun == true)
         {
-            weaponIndex = 3;
-            Debug.Log("3");
+            GameData.instance.weaponIndex = 3;
         }
 }
 
@@ -538,32 +532,40 @@ public void changeWeapon()
             }
        
     }
-IEnumerator LoseHPCoroutine()
-{
-    anim.SetTrigger("isHit");
+    IEnumerator LoseHPCoroutine()
+    {
+    anim.SetTrigger("isHit"); //anim 
     
-    lives = PlayerPrefs.GetInt("lives");
-    lives--;
+    GameData.instance.playerHP--;
 
-    if (lives <= 0)
-    {
-        PlayerPrefs.DeleteKey("lives");
+        if (GameData.instance.playerHP <= 0)
+        {
+            PlayerPrefs.DeleteKey("lives");
 
-        yield return new WaitForSeconds(timeDie); // espera a que termine la animación
-        GameController.instance.gameOver();
+            yield return new WaitForSeconds(timeDie); // espera a que termine la animación
+            GameController.instance.gameOver(); // Menu Morte
+            Time.timeScale= 0f;
+            
     }
-    else if (lives > 0)
-    {
-        PlayerPrefs.SetInt("lives", lives);
+        else if (GameData.instance.playerHP > 0)
+        {
+            PlayerPrefs.SetInt("lives", GameData.instance.playerHP);
 
-        yield return new WaitForSeconds(timeDie); // también puedes esperar aquí si quieres que se vea la animación antes de recargar
+            //yield return new WaitForSeconds(timeDie); // anim morte
 
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // Recarga La nueva escena
+        }
     }
-}
     public void loseHP()
     {
         StartCoroutine(LoseHPCoroutine());
+    }
+    IEnumerator Respawn()
+    {
+        GetComponent<SpriteRenderer>().enabled = false;
+        yield return new WaitForSeconds(timeDie);
+        transform.position = respawnPoint.position;
+        GetComponent<SpriteRenderer>().enabled = true;
     }
     void OnDrawGizmos()
     {
@@ -573,19 +575,19 @@ IEnumerator LoseHPCoroutine()
 
     void verifySprite()
     {
-        if (weaponIndex==1)
+        if (GameData.instance.weaponIndex==1)
         {
             anim.SetBool("inPistol", true);
         } else {
             anim.SetBool("inPistol", false);
         }
-        if (weaponIndex==2)
+        if (GameData.instance.weaponIndex==2)
         {
             anim.SetBool("inSMG", true);
         } else {
             anim.SetBool("inSMG", false);
         }
-        if (weaponIndex==3)
+        if (GameData.instance.weaponIndex==3)
         {
             anim.SetBool("inShotgun", true);
         } else {
@@ -620,34 +622,42 @@ IEnumerator LoseHPCoroutine()
     }
         void OnTriggerEnter2D(Collider2D collider)
     {
-       if (collider.gameObject.tag == "Bullet_enemy1") {
-            Destroy(collider.gameObject);
-            loseHP();
-            }
-         if (collider.gameObject.tag == "BulletRobot") {
-            Destroy(collider.gameObject);
-            loseHP();
-            }           
-        if (collider.gameObject.CompareTag("BoxBulletSMG")) 
+       if (collider.gameObject.tag == "Bullet_enemy1")
         {
-        bulletAmountSMG=bulletAmountSMG+10;
-        Shoot.instance.updateText();
-        Destroy(collider.gameObject); 
+            Destroy(collider.gameObject);
+            loseHP();
+        }
+         if (collider.gameObject.tag == "BulletRobot")
+        {
+            Destroy(collider.gameObject);
+            loseHP();
+        }
+        if (collider.gameObject.tag == "BulletDrone")
+        {
+            Destroy(collider.gameObject);
+            loseHP();
+        }
+                  
+        if (collider.gameObject.CompareTag("BoxBulletSMG"))
+        {
+            GameData.instance.bulletAmountSMG = GameData.instance.bulletAmountSMG + 10;
+            Shoot.instance.updateText();
+            Destroy(collider.gameObject);
         }
         if (collider.gameObject.CompareTag("SMG")){
         Destroy(collider.gameObject);
-        hasSMG=true;
+        GameData.instance.hasSMG=true;
         GameController.instance.spawnerEnemy.SetActive(false);
         GameController.instance.spawnerDrone.SetActive(false);  
-        CanvasController.instace.changePistolBetweenSMGAds.SetActive(true);
+        CanvasController.instance.changePistolBetweenSMGAds.SetActive(true);
 
         }
         if (collider.gameObject.CompareTag("BoxBulletShotgun")) {
-        bulletAmountShotgun=bulletAmountShotgun+10;
+        GameData.instance.bulletAmountShotgun=GameData.instance.bulletAmountShotgun+10;
         Destroy(collider.gameObject); 
             }
         if (collider.gameObject.CompareTag("BoxBulletPistols")) {
-        bulletAmountPistol=bulletAmountPistol+10;
+        GameData.instance.bulletAmountPistol=GameData.instance.bulletAmountPistol+10;
         Shoot.instance.updateText();
         Destroy(collider.gameObject); 
             }
