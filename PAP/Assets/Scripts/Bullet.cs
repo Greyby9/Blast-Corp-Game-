@@ -7,31 +7,36 @@ public class Bullet : MonoBehaviour
 
     public float bulletCounter, bulletTime;
     bool noMove = false;
+    float margin = 0.05f;
 
 
     void Start()
     {
-        bulletCounter = bulletTime;
-
+ 
     }
 
     void Update()
     {
-        if (bulletTime > 0)
+        bulletCounter += Time.deltaTime;        
+        if (GameData.instance.weaponIndex == 1 | GameData.instance.weaponIndex == 2)// Destruye las balas de Pistol Y SMG
         {
-            bulletTime -= Time.deltaTime;
-        }
-
-        if (bulletTime <= 0f)
+        Vector3 viewPos = Camera.main.WorldToViewportPoint(transform.position); 
+        if (viewPos.x < -margin || viewPos.x > 1 + margin || viewPos.y < -margin || viewPos.y > 1 + margin) 
         {
             Destroy(gameObject);
+        }            
         }
         if (GameData.instance.weaponIndex == 3)
         {
-            verifyAngle();
+        verifyAngle();
+        if (bulletCounter >= bulletTime) //Destruye bala Shotgun
+        {
+        Destroy(gameObject);
+        }
         }
 
     }
+
     void verifyAngle()//Arregla El shootPoint del Shotgun
     {
         if (Player.instance.lookingRight && Player.instance.anim.GetBool("Diagonally") == false) // idle

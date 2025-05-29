@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using Unity.VisualScripting.Dependencies.NCalc;
+using System;
 
 
 
@@ -29,7 +31,7 @@ public class Player : MonoBehaviour
     public bool enSuelo;
 
     private Rigidbody2D miCuerpoRigido;
-    public Animator anim;
+    public Animator anim,animFade;
     public float timeDie;
 
   //  public CanvasController canvasController;
@@ -155,7 +157,7 @@ public class Player : MonoBehaviour
         shootPoint=shootPointDiagonallyPistol;  
         } 
         }
-        if (GameData.instance.weaponIndex==2)
+        if (GameData.instance.weaponIndex==2) // SMG
         {
         shootPoint=shootPointIdleSMG;
         if (Input.GetKey(KeyCode.UpArrow) && Input.GetKey(KeyCode.DownArrow)) //Bug
@@ -371,7 +373,7 @@ public class Player : MonoBehaviour
     void Update()
     {
 
-      //  canvasController.UpdateUp(PlayerPrefs.GetInt("lives")); // Vidas
+        //  canvasController.UpdateUp(PlayerPrefs.GetInt("lives")); // Vidas
 
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, lengthRayCast, capaSuelo);
         enSuelo = hit.collider != null;
@@ -390,6 +392,7 @@ public class Player : MonoBehaviour
         staticPlayer();
         viewPoint();
         changeWeapon();
+        setLookingRight();
 
     }
         void staticPlayer()
@@ -400,13 +403,13 @@ public class Player : MonoBehaviour
         speedMoviment=0;
             if (Input.GetKey(KeyCode.LeftArrow))
             {
-            lookingRight=false; 
-            transform.eulerAngles = new Vector3(0f,180f,0f);
-            } 
+            transform.eulerAngles = new Vector3(0f, 180f, 0f);
+            setLookingRight();
+            }
             if (Input.GetKey(KeyCode.RightArrow))
             {
-            lookingRight=true;
-            transform.eulerAngles = new Vector3(0f,0f,0f);
+            transform.eulerAngles = new Vector3(0f, 0f, 0f);
+            setLookingRight();
             }
         } 
         else 
@@ -441,13 +444,13 @@ public class Player : MonoBehaviour
         if (movementX > 0 && !isDuck)
         {
             transform.eulerAngles = new Vector3(0f, 0f, 0f);
-            lookingRight = true;
+            setLookingRight();
             anim.SetBool("move", true);
         }
         else if (movementX < 0 && !isDuck)
         {
             transform.eulerAngles = new Vector3(0f, 180f, 0f);
-            lookingRight = false;
+            setLookingRight();
             anim.SetBool("move", true);
         }
         else
@@ -484,7 +487,6 @@ public void changeWeapon()
         }
 }
 
-
     void duck(){
         if(Input.GetKey(KeyCode.DownArrow) && enSuelo && !Input.GetKey(KeyCode.UpArrow))
         { 
@@ -492,21 +494,24 @@ public void changeWeapon()
             isDuck=true;
             boxCollider.size = new Vector2(originalSizeCollider.x, originalSizeCollider.y * 0.5f); // Reduce la altura a la mitad
             boxCollider.offset = new Vector2(originalOffsetCollider.x, originalOffsetCollider.y - (originalSizeCollider.y * 0.25f)); // Baja el Collider
-            
-            if (Input.GetKey(KeyCode.LeftArrow)){
-                lookingRight=false;
-                transform.eulerAngles = new Vector3(0f,180f,0f);
-            } 
-            if (Input.GetKey(KeyCode.RightArrow)){
-                lookingRight=true;
-                transform.eulerAngles = new Vector3(0f,0f,0f);
-            }
-             else {
-                speedMoviment=initialSpeedMoviment;
-            boxCollider.size = originalSizeCollider; // Restaura el tamaño original
-            boxCollider.offset = originalOffsetCollider; // Restaura el offset original
 
-        }
+            if (Input.GetKey(KeyCode.LeftArrow))
+            {
+                transform.eulerAngles = new Vector3(0f, 180f, 0f);
+                setLookingRight();
+            }
+            if (Input.GetKey(KeyCode.RightArrow))
+            {
+                transform.eulerAngles = new Vector3(0f, 0f, 0f);
+                setLookingRight();
+            }
+            else
+            {
+                speedMoviment = initialSpeedMoviment;
+                boxCollider.size = originalSizeCollider; // Restaura el tamaño original
+                boxCollider.offset = originalOffsetCollider; // Restaura el offset original
+
+            }
     
     }else
     {
@@ -532,6 +537,17 @@ public void changeWeapon()
             }
        
     }
+    void setLookingRight()
+    {
+        if (transform.eulerAngles == new Vector3(0f, 180f, 0f))
+        {
+            lookingRight = false;
+        }
+        if (transform.eulerAngles == new Vector3(0f, 0f, 0f))
+        {
+            lookingRight = true;
+        }
+    }
     IEnumerator LoseHPCoroutine()
     {
     anim.SetTrigger("isHit"); //anim 
@@ -551,7 +567,9 @@ public void changeWeapon()
         {
             PlayerPrefs.SetInt("lives", GameData.instance.playerHP);
 
-            //yield return new WaitForSeconds(timeDie); // anim morte
+            yield return new WaitForSeconds(timeDie); // anim morte
+            animFade.SetTrigger("up-1");
+            yield return new WaitForSeconds(0.7f); // Tiempo de animacion de menos una vida
 
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // Recarga La nueva escena
         }
@@ -559,13 +577,6 @@ public void changeWeapon()
     public void loseHP()
     {
         StartCoroutine(LoseHPCoroutine());
-    }
-    IEnumerator Respawn()
-    {
-        GetComponent<SpriteRenderer>().enabled = false;
-        yield return new WaitForSeconds(timeDie);
-        transform.position = respawnPoint.position;
-        GetComponent<SpriteRenderer>().enabled = true;
     }
     void OnDrawGizmos()
     {
@@ -632,35 +643,45 @@ public void changeWeapon()
             Destroy(collider.gameObject);
             loseHP();
         }
+         if (collider.gameObject.tag == "ZoneLock")
+        {
+            BlockZone.instance.SwitchToBossBounds();
+        }        
         if (collider.gameObject.tag == "BulletDrone")
         {
             Destroy(collider.gameObject);
             loseHP();
-        }
-                  
+        }        
         if (collider.gameObject.CompareTag("BoxBulletSMG"))
         {
             GameData.instance.bulletAmountSMG = GameData.instance.bulletAmountSMG + 10;
             Shoot.instance.updateText();
             Destroy(collider.gameObject);
         }
-        if (collider.gameObject.CompareTag("SMG")){
+        if (collider.gameObject.CompareTag("SMG"))
+        {
         Destroy(collider.gameObject);
         GameData.instance.hasSMG=true;
         GameController.instance.spawnerEnemy.SetActive(false);
         GameController.instance.spawnerDrone.SetActive(false);  
         CanvasController.instance.changePistolBetweenSMGAds.SetActive(true);
-
         }
-        if (collider.gameObject.CompareTag("BoxBulletShotgun")) {
-        GameData.instance.bulletAmountShotgun=GameData.instance.bulletAmountShotgun+10;
-        Destroy(collider.gameObject); 
-            }
-        if (collider.gameObject.CompareTag("BoxBulletPistols")) {
+        if (collider.gameObject.CompareTag("WalkieTalkie"))
+        {
+        Destroy(collider.gameObject);
+        GameData.instance.hasWalkieTalkie = true;
+        }
+        if (collider.gameObject.CompareTag("BoxBulletShotgun"))
+        {
+            GameData.instance.bulletAmountShotgun = GameData.instance.bulletAmountShotgun + 10;
+            Destroy(collider.gameObject);
+        }
+        if (collider.gameObject.CompareTag("BoxBulletPistols"))
+        {
         GameData.instance.bulletAmountPistol=GameData.instance.bulletAmountPistol+10;
         Shoot.instance.updateText();
         Destroy(collider.gameObject); 
-            }
+        }
     
     }   
     }

@@ -12,13 +12,14 @@ public class GameData : MonoBehaviour
     public int playerHP;
     public Animator anim;
 
-    //Pistols
+    //Weapons
     public int weaponIndex = 1;
     public bool hasPistol;
     public bool hasSMG=false;
     public bool hasShotgun=false;
+    public bool hasWalkieTalkie = false;
     // Bullets Pistols
-    public int bulletAmountSMG= 10;
+    public int bulletAmountSMG = 10;
     public int bulletAmountPistol= 10;
     public int bulletAmountShotgun=10;
 
@@ -69,6 +70,7 @@ public class GameData : MonoBehaviour
 
         setPlayerHp();
         Shoot.instance.updateText(); // Atualiza las balas en el canvas;
+        Player.instance.animFade = GameObject.FindWithTag("animFade").GetComponent<Animator>();
 
     }
     void setPlayerHp()

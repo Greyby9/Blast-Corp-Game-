@@ -21,6 +21,7 @@ public class CanvasController : MonoBehaviour
     public GameObject canvasPistol;
     public GameObject canvasSMG;
     public GameObject canvasShotgun;
+    public GameObject canvasWalkieTalkie;
     public GameObject changePistolBetweenSMGAds;
     void Awake()
     {
@@ -35,9 +36,10 @@ public class CanvasController : MonoBehaviour
     }
     void Start()
     {
+        canvasPistol.SetActive(true);        
         canvasSMG.SetActive(false);
-        canvasPistol.SetActive(true);
         canvasShotgun.SetActive(false);
+        canvasWalkieTalkie.SetActive(false);
         changePistolBetweenSMGAds.SetActive(false);
 
         
@@ -57,9 +59,15 @@ public class CanvasController : MonoBehaviour
         if(GameData.instance.hasShotgun==true){
         canvasShotgun.SetActive(true);
         }
-        if (changePistolBetweenSMGAds.activeSelf){
+        if (GameData.instance.hasWalkieTalkie == true)
+        {
+        canvasWalkieTalkie.SetActive(true);
+        }
+        if (changePistolBetweenSMGAds.activeSelf)
+        {
             Time.timeScale = 0f;
-            if (Input.GetKey(KeyCode.N)){
+            if (Input.GetKey(KeyCode.N))
+            {
                 changePistolBetweenSMGAds.SetActive(false);
                 Time.timeScale = 1f;
             }

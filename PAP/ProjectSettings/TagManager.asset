@@ -20,6 +20,9 @@ TagManager:
   - end
   - SMG
   - SpawnPoint
+  - animFade
+  - ZoneLock
+  - WalkieTalkie
   layers:
   - Default
   - TransparentFX
